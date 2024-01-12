@@ -1,4 +1,4 @@
-package com.project.drivr.ui.slideshow;
+package com.project.drivr.ui.car_menu;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.project.drivr.databinding.FragmentSlideshowBinding;
+import com.project.drivr.databinding.FragmentCarMenuBinding;
 
-public class SlideshowFragment extends Fragment {
+public class CarMenuFragment extends Fragment {
 
-    private FragmentSlideshowBinding binding;
+    private FragmentCarMenuBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SlideshowViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        CarMenuViewModel carMenuViewModel =
+                new ViewModelProvider(this).get(CarMenuViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentCarMenuBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        // final TextView textView = binding.textGallery;
+        // carMenuViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

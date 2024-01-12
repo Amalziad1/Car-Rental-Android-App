@@ -12,14 +12,38 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.project.drivr.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/car_menu"
+        android:name="com.project.drivr.ui.car_menu.CarMenuFragment"
+        android:label="@string/menu_car_menu"
+        tools:layout="@layout/fragment_car_menu" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.project.drivr.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/your_reservations"
+        android:name="com.project.drivr.ui.reservations.ReservationsFragment"
+        android:label="@string/menu_reservations"
+        tools:layout="@layout/fragment_reservations" />
+
+    <fragment
+        android:id="@+id/favorites"
+        android:name="com.project.drivr.ui.favorites.FavoritesFragment"
+        android:label="@string/menu_favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <fragment
+        android:id="@+id/special_offers"
+        android:name="com.project.drivr.ui.offers.OffersFragment"
+        android:label="@string/menu_offers"
+        tools:layout="@layout/fragment_offers" />
+
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.project.drivr.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/find_us"
+        android:name="com.project.drivr.ui.find_us.FindUsFragment"
+        android:label="@string/menu_find_us"
+        tools:layout="@layout/fragment_find_us" />
 </navigation>

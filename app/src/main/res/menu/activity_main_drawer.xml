@@ -6,15 +6,35 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/home"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_car_menu"
+            android:icon="@drawable/directions_car"
+            android:title="@string/menu_car_menu" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_reservations"
+            android:icon="@drawable/calendar_month"
+            android:title="@string/menu_reservations" />
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/favorite"
+            android:title="@string/menu_favorites" />
+        <item
+            android:id="@+id/nav_offers"
+            android:icon="@drawable/stars"
+            android:title="@string/menu_offers" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/account_circle"
+            android:title="@string/menu_profile" />
+        <item
+            android:id="@+id/nav_find_us"
+            android:icon="@drawable/call"
+            android:title="@string/menu_find_us" />
+        <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/logout"
+            android:title="@string/menu_logout" />
     </group>
 </menu>
