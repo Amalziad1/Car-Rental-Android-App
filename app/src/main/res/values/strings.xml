@@ -16,4 +16,48 @@
     <string name="menu_offers">Special Offers</string>
     <string name="menu_logout">Sign Out</string>
 
+    <string-array name="gender_array">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="country_array">
+        <item>Select Country</item>
+        <item>Jordan</item>
+        <item>Lebanon</item>
+        <item>Palestine</item>
+        <item>Syria</item>
+    </string-array>
+    <array name="selectcountry">
+        <item>Select City</item>
+    </array>
+    <string-array name="jordan_cities">
+        <item>Select City</item>
+        <item>Amman</item>
+        <item>Irbid</item>
+        <item>Zarqa</item>
+    </string-array>
+    <string-array name="syria_cities">
+        <item>Select City</item>
+        <item>Damascus</item>
+        <item>Halab</item>
+        <item>Homs</item>
+    </string-array>
+    <string-array name="palestine_cities">
+        <item>Select City</item>
+        <item>Jerusalem</item>
+        <item>Nablus</item>
+        <item>Ramallah</item>
+    </string-array>
+    <string-array name="lebanon_cities">
+        <item>Select City</item>
+        <item>Baalbek</item>
+        <item>Beirut</item>
+        <item>Byblos</item>
+    </string-array>
+    <string name="Palestine_zip_code">970</string>
+    <string name="Jordan_zip_code">962</string>
+    <string name="Lebanon_zip_code">961</string>
+    <string name="Syria_zip_code">963</string>
 </resources>
