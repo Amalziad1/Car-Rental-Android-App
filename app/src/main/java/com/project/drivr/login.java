@@ -20,7 +20,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class login extends AppCompatActivity {
-
+//    private String storedEmail;
+    SharedPrefManager sharedPrefManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,7 @@ public class login extends AppCompatActivity {
         CheckBox checkBoxRememberMe=findViewById(R.id.remember);
         DataBaseHelper dataBaseHelper = new DataBaseHelper(login.this,"registration",null,1);
         Button login=findViewById(R.id.login);
+        sharedPrefManager =SharedPrefManager.getInstance(this);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,13 +44,15 @@ public class login extends AppCompatActivity {
                             String pass=hashPassword(password.getText().toString());
                             Cursor auth = dataBaseHelper.getUserByEmail(email.getText().toString());
                             if (auth != null && auth.moveToLast()) {
-                                @SuppressLint("Range")String passValue = auth.getString(auth.getColumnIndexOrThrow("PASSWORD"));
+                                @SuppressLint("Range") String passValue = auth.getString(auth.getColumnIndexOrThrow("PASSWORD"));
                                 if(passValue.equals(pass)){
+                                    sharedPrefManager.writeString("userName",email.getText().toString());
+                                    sharedPrefManager.writeString("password",password.getText().toString());
                                     Toast.makeText(getApplicationContext(), "Login succeed", Toast.LENGTH_SHORT).show();
                                     if (checkBoxRememberMe.isChecked()) {
-                                        storeCredentials(email.getText().toString(), password.getText().toString());
+                                        sharedPrefManager.writeString("rememberMe","yes");
                                     } else {
-                                        clearStoredCredentials();
+                                        sharedPrefManager.writeString("rememberMe","no");
                                     }
                                     Intent intent = new Intent(login.this, MainActivity.class);
                                     startActivity(intent);
@@ -85,19 +89,22 @@ public class login extends AppCompatActivity {
             return null;
         }
     }
-    private void storeCredentials(String email, String password) {
-        SharedPreferences preferences = getSharedPreferences(email, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("storedEmail", email);
-        editor.putString("storedPassword", password);
-        editor.apply();
-    }
-    private void clearStoredCredentials() {
-        //clear stored credentials if "Remember Me" is unchecked
-        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("storedEmail");
-        editor.remove("storedPassword");
-        editor.apply();
-    }
+//    private SharedPreferences storeCredentials(String email, String password) {//yes to save data if 1, 0 if not
+//        SharedPreferences preferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.putString("storedEmail", email);
+//        editor.putString("storedPassword", password);
+////        editor.putInt("rememberMe",yes);
+//        editor.apply();
+//        return preferences;
+//    }
+//
+//    private void clearStoredCredentials() {
+//        //clear stored credentials if "Remember Me" is unchecked
+//        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.remove("storedEmail");
+//        editor.remove("storedPassword");
+//        editor.apply();
+//    }
 }

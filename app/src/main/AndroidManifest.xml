@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +15,17 @@
         android:theme="@style/Theme.Drivr"
         tools:targetApi="31">
         <activity
+            android:name=".ui.favorites.favoriteFragment"
+            android:exported="false" />
+        <activity
+            android:name=".ui.car_menu.viewCarDetails"
+            android:exported="false" />
+        <activity
+            android:name=".LoginSignup"
+            android:exported="false"
+            android:label="@string/title_activity_connection"
+            android:theme="@style/Theme.Drivr" />
+        <activity
             android:name=".login"
             android:exported="false"
             android:theme="@style/Theme.Drivr.NoActionBar" />
@@ -21,7 +34,7 @@
             android:exported="false"
             android:theme="@style/Theme.Drivr.NoActionBar" />
         <activity
-            android:name=".LoginSignup"
+            android:name=".Connection"
             android:exported="true"
             android:theme="@style/Theme.Drivr.NoActionBar">
             <intent-filter>
@@ -34,8 +47,7 @@
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Drivr.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.Drivr.NoActionBar" />
     </application>
 
 </manifest>

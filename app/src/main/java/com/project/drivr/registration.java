@@ -148,16 +148,16 @@ public class registration extends AppCompatActivity {
             }
         });
         signup.setOnClickListener(new View.OnClickListener() {
-                                      @Override public void onClick(View view) {
-                                          hideKeyboard();
-                                          //Toast.makeText(getApplicationContext(), "============", Toast.LENGTH_SHORT).show();
-                                          String firstName=fname.getText().toString();
-                                          String lastName=lname.getText().toString();
-                                          String Email=email.getText().toString();
-                                          String Country=spinnerCountry.getSelectedItem().toString();
-                                          String City=spinnerCity.getSelectedItem().toString();
-                                          String Password=password.getText().toString();
-                                          String confirmPassword=confirm.getText().toString();
+            @Override public void onClick(View view) {
+                hideKeyboard();
+                //Toast.makeText(getApplicationContext(), "============", Toast.LENGTH_SHORT).show();
+                 String firstName=fname.getText().toString();
+                 String lastName=lname.getText().toString();
+                 String Email=email.getText().toString();
+                 String Country=spinnerCountry.getSelectedItem().toString();
+                 String City=spinnerCity.getSelectedItem().toString();
+                 String Password=password.getText().toString();
+                 String confirmPassword=confirm.getText().toString();
                                           String phoneNumber=editTextPhoneNumber.getText().toString();
                                           String gender=spinnerGender.getSelectedItem().toString();
                                           int flag=0;

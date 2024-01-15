@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/carDetailsLayout"
+    android:layout_width="380dp"
+    android:layout_height="250dp"
+    android:orientation="vertical"
+    tools:context=".ui.car_menu.CarMenu">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/carDetailsConstraint"
+        android:layout_width="380dp"
+        android:layout_height="230dp"
+        android:background="@drawable/rounded_fragment_layout">
+
+        <ImageView
+            android:id="@+id/photoImageView"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_fragment_layout"
+            android:scaleType="fitCenter"
+            android:src="@drawable/placeholder_photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/menuCarName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="52dp"
+            android:text="Car Name"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
+
+        <Button
+            android:id="@+id/Reserve"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="#79A39F"
+            android:drawableLeft="@drawable/calendar_month"
+            android:text="Reserve"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toStartOf="@+id/photoImageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/AddFav"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="#79A39F"
+            android:drawableLeft="@drawable/favorite"
+            android:text="Favorite"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toStartOf="@+id/photoImageView"
+            app:layout_constraintTop_toBottomOf="@+id/Reserve" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
