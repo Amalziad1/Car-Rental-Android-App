@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,7 +22,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -148,9 +154,9 @@ public class registration extends AppCompatActivity {
             }
         });
         signup.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
-                hideKeyboard();
-                //Toast.makeText(getApplicationContext(), "============", Toast.LENGTH_SHORT).show();
+             @Override public void onClick(View view) {
+                 hideKeyboard();
+                 //Toast.makeText(getApplicationContext(), "============", Toast.LENGTH_SHORT).show();
                  String firstName=fname.getText().toString();
                  String lastName=lname.getText().toString();
                  String Email=email.getText().toString();
@@ -158,50 +164,52 @@ public class registration extends AppCompatActivity {
                  String City=spinnerCity.getSelectedItem().toString();
                  String Password=password.getText().toString();
                  String confirmPassword=confirm.getText().toString();
-                                          String phoneNumber=editTextPhoneNumber.getText().toString();
-                                          String gender=spinnerGender.getSelectedItem().toString();
-                                          int flag=0;
-                                          if(firstName.length()<3){
-                                              fname.setError("Must be at least 3 characters");
-                                              flag++;
-                                          }if(lastName.length()<3){
-                                              lname.setError("Must be at least 3 characters");
-                                              flag++;
-                                          }if(!validateEmailFormat(Email)){
-                                              email.setError("Invalid email format");
-                                              flag++;
-                                          }if(Country.equalsIgnoreCase("Select Country") || City.equalsIgnoreCase("Select City")|| City.equals(null)){
-                                              flag++;
-                                          }if(!validatePassword(Password)){
-                                              password.setError("Must be at least 5 chars, 1 character, 1 number, and 1 special character");
-                                              flag++;
-                                          }if(phoneNumber.length()<13){
-                                              editTextPhoneNumber.setError("Must be 13 length");
-                                              flag++;
-                                          }if(!Password.equals(confirmPassword)){
-                                              confirm.setError("Password does not match");
-                                              flag++;
-                                          }
-                                          if(flag>0){
-                                              Toast.makeText(getApplicationContext(), "Incomplete data", Toast.LENGTH_SHORT).show();
-                                          }else{
-                                              Password=hashPassword(Password);
-                                              long number=Long.parseLong(phoneNumber);
-                                              User user=new User(firstName,lastName,gender,Email,Country,City,Password,number);
-                                              DataBaseHelper dataBaseHelper = new DataBaseHelper(registration.this,"registration",null,1);
-                                              if(dataBaseHelper.isUserWithEmailExists(Email)){
-                                                  Toast.makeText(registration.this, "User with this email exists", Toast.LENGTH_SHORT).show();
-                                              }else{
-                                                  dataBaseHelper.insertUser(user);
-                                                  Toast.makeText(registration.this, "User added successfully", Toast.LENGTH_SHORT).show();
-                                                  //opening another ui
-                                                  Intent intent = new Intent(registration.this, LoginSignup.class);
-                                                  startActivity(intent);
-                                                  finish();
-                                              }
-                                          }
-                                      }
-                                  }
+                 String phoneNumber=editTextPhoneNumber.getText().toString();
+                 String gender=spinnerGender.getSelectedItem().toString();
+                 int flag=0;
+                 if(firstName.length()<3){
+                     fname.setError("Must be at least 3 characters");
+                     flag++;
+                 }if(lastName.length()<3){
+                     lname.setError("Must be at least 3 characters");
+                     flag++;
+                 }if(!validateEmailFormat(Email)){
+                     email.setError("Invalid email format");
+                     flag++;
+                 }if(Country.equalsIgnoreCase("Select Country") || City.equalsIgnoreCase("Select City")|| City.equals(null)){
+                     flag++;
+                 }if(!validatePassword(Password)){
+                     password.setError("Must be at least 5 chars, 1 character, 1 number, and 1 special character");
+                     flag++;
+                 }if(phoneNumber.length()<13){
+                     editTextPhoneNumber.setError("Must be 13 length");
+                     flag++;
+                 }if(!Password.equals(confirmPassword)){
+                     confirm.setError("Password does not match");
+                     flag++;
+                 }
+                 if(flag>0){
+                     Toast.makeText(getApplicationContext(), "Incomplete data", Toast.LENGTH_SHORT).show();
+                 }else{
+                     Password=hashPassword(Password);
+                     long number=Long.parseLong(phoneNumber);
+                     String defaultPFPpath = getApplicationContext().getFilesDir().toString() + "/default_profile_picture.jpg";
+                     copyPFPToFilesDir(R.raw.default_profile_picture, defaultPFPpath);
+                     User user=new User(firstName, lastName, gender, Email, Country, City, Password, number, defaultPFPpath);
+                     DataBaseHelper dataBaseHelper = new DataBaseHelper(registration.this,"registration",null,1);
+                     if(dataBaseHelper.isUserWithEmailExists(Email)){
+                         Toast.makeText(registration.this, "User with this email exists", Toast.LENGTH_SHORT).show();
+                     }else{
+                         dataBaseHelper.insertUser(user);
+                         Toast.makeText(registration.this, "User added successfully", Toast.LENGTH_SHORT).show();
+                         //opening another ui
+                         Intent intent = new Intent(registration.this, LoginSignup.class);
+                         startActivity(intent);
+                         finish();
+                     }
+                 }
+             }
+          }
         );
     }
     private String hashPassword(String password) {
@@ -261,5 +269,15 @@ public class registration extends AppCompatActivity {
                 getPackageName()
         );
         return getString(zipCodeResourceId);
+    }
+    private void copyPFPToFilesDir(int resourceID, String defaultPFPpath) {
+        InputStream defaultPFP = getResources().openRawResource(resourceID);
+        try {
+            Files.copy(defaultPFP, Paths.get(defaultPFPpath));
+        } catch (IOException e) {
+            Log.d("IOException:", "During default pfp copy", e);
+        } catch (SecurityException e) {
+            Log.d("SecurityException:", "During default pfp copy", e);
+        }
     }
 }
