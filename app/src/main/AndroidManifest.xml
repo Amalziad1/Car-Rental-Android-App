@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Drivr"
         tools:targetApi="31">
         <activity
-            android:name=".ui.favorites.favoriteFragment"
+            android:name=".ui.favorites.FavoriteFragment2"
             android:exported="false" />
         <activity
             android:name=".ui.car_menu.viewCarDetails"

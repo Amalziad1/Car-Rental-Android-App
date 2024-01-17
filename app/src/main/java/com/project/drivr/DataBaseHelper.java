@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.project.drivr.ui.car_menu.Car;
 import com.project.drivr.ui.reservations.Reservation;
@@ -120,7 +121,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String[] selectionArgs = { email };
         return db.rawQuery("SELECT * FROM Reserve WHERE EMAIL=?", selectionArgs);
     }
-    public Cursor getFavorite(String email){
+    public Cursor getFavorites(String email){
         SQLiteDatabase db = this.getReadableDatabase();
         String[] selectionArgs = { email };
         return db.rawQuery("SELECT * FROM Favorite WHERE EMAIL=?", selectionArgs);
@@ -144,8 +145,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
     public int removeFavorite(String VIN, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String whereClause = "VIN = ? AND EMAIL = ?";
-        String[] whereArgs = { VIN, email };
-        return db.delete("Favorite", whereClause, whereArgs);
+        String tableName = "Favorite";
+        String whereClause = "VIN = ? AND email = ?";
+        String[] whereArgs = {VIN, email};
+        try {
+            int rowsDeleted = db.delete(tableName, whereClause, whereArgs);
+            db.close();
+            return rowsDeleted;
+        } catch (Exception e) {
+            return -1; // Return a value that indicates an error
+        }
     }
+
 }

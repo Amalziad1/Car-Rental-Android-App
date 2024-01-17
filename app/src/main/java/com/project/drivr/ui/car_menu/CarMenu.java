@@ -10,17 +10,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.project.drivr.DataBaseHelper;
-import com.project.drivr.MainActivity;
 import com.project.drivr.R;
-
 
 import com.project.drivr.ui.reservations.Reservation;
 import com.squareup.picasso.Picasso;
@@ -111,7 +109,8 @@ public class CarMenu extends Fragment {
         addFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //dataBaseHelper.insertReservation(reserve);
+                dataBaseHelper.insertFavorite(email,VIN);
+                Toast.makeText(getActivity().getApplicationContext(), "Added to favorites", Toast.LENGTH_SHORT).show();
             }
         });
         return view;

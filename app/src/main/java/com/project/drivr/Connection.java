@@ -36,7 +36,7 @@ public class Connection extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ConnectionAsync connectionAsyncTask = new ConnectionAsync(Connection.this);
-                connectionAsyncTask.execute("https://mp0364e1f95be16573ab.free.beeceptor.com/data");
+                connectionAsyncTask.execute("https://mpad83d493b2c21aadf9.free.beeceptor.com/data");
             }
         });
     }
