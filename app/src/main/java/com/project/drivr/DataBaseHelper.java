@@ -15,8 +15,16 @@ import java.util.Locale;
 
 
 public class DataBaseHelper extends SQLiteOpenHelper {
+    private static DataBaseHelper instance = null;
 
-    public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public static DataBaseHelper getInstance(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        if (instance != null) {
+            return instance;
+        }
+        instance = new DataBaseHelper(context, name, factory, version);
+        return instance;
+    }
+    private DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

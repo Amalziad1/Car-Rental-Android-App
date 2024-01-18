@@ -56,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        sharedPrefManager =SharedPrefManager.getInstance(this);
+        sharedPrefManager = SharedPrefManager.getInstance(this);
         String userName = sharedPrefManager.readString("userName", null);
-        dataBaseHelper = new DataBaseHelper(this, "registration", null, 1);
+        dataBaseHelper = DataBaseHelper.getInstance(this, "registration", null, 1);
         Cursor cursor = dataBaseHelper.getUserByEmail(userName);
         cursor.moveToLast();
         int firstNameIndex = cursor.getColumnIndexOrThrow("FIRSTNAME");

@@ -29,7 +29,7 @@ public class login extends AppCompatActivity {
         EditText email=findViewById(R.id.emailLog);
         EditText password=findViewById(R.id.pass);
         CheckBox checkBoxRememberMe=findViewById(R.id.remember);
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(login.this,"registration",null,1);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(login.this,"registration",null,1);
         Button login=findViewById(R.id.login);
         sharedPrefManager =SharedPrefManager.getInstance(this);
         login.setOnClickListener(new View.OnClickListener() {

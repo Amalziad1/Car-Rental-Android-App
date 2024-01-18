@@ -196,7 +196,7 @@ public class registration extends AppCompatActivity {
                      String defaultPFPpath = getApplicationContext().getFilesDir().toString() + "/default_profile_picture.jpg";
                      copyPFPToFilesDir(R.raw.default_profile_picture, defaultPFPpath);
                      User user=new User(firstName, lastName, gender, Email, Country, City, Password, number, defaultPFPpath);
-                     DataBaseHelper dataBaseHelper = new DataBaseHelper(registration.this,"registration",null,1);
+                     DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(registration.this,"registration",null,1);
                      if(dataBaseHelper.isUserWithEmailExists(Email)){
                          Toast.makeText(registration.this, "User with this email exists", Toast.LENGTH_SHORT).show();
                      }else{
