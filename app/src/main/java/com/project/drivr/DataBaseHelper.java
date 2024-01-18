@@ -16,15 +16,23 @@ import java.util.Locale;
 
 
 public class DataBaseHelper extends SQLiteOpenHelper {
+    private static DataBaseHelper instance = null;
 
-    public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public static DataBaseHelper getInstance(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        if (instance != null) {
+            return instance;
+        }
+        instance = new DataBaseHelper(context, name, factory, version);
+        return instance;
+    }
+    private DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
     // onCreate method is called when the database is created for the first time.
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableUser= "CREATE TABLE IF NOT EXISTS User(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, GENDER TEXT, COUNTRY TEXT, CITY TEXT,PASSWORD TEXT, PHONE LONG);";
+        String createTableUser= "CREATE TABLE IF NOT EXISTS User(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, GENDER TEXT, COUNTRY TEXT, CITY TEXT,PASSWORD TEXT, PHONE LONG, PICTURE_PATH TEXT);";
         db.execSQL(createTableUser);
         String createTableCar = "CREATE TABLE IF NOT EXISTS Car(VIN TEXT PRIMARY KEY, FACTORY TEXT, TYPE TEXT, PRICE DOUBLE, MODEL INTEGER, IMG TEXT);";
         db.execSQL(createTableCar);
@@ -50,6 +58,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("CITY", user.getCity());
         contentValues.put("PASSWORD", user.getPassword());
         contentValues.put("PHONE", user.getPhoneNumber());
+        contentValues.put("PICTURE_PATH", user.getPicturePath());
         sqLiteDatabase.insert("User", null, contentValues);
         sqLiteDatabase.close();
     }

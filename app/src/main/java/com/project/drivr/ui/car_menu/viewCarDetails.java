@@ -47,7 +47,7 @@ public class viewCarDetails extends AppCompatActivity {
         Button addFav=findViewById(R.id.dAddFav);
         Button addRes=findViewById(R.id.dAddRes);
 
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(viewCarDetails.this,"registration",null,1);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(viewCarDetails.this,"registration",null,1);
         Reservation reserve=new Reservation();
         long currentTimeMillis = System.currentTimeMillis();
         Date currentDate = new Date(currentTimeMillis);
