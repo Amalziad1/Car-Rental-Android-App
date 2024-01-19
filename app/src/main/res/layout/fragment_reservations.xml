@@ -8,7 +8,7 @@
     tools:context=".ui.reservations.ReservationsFragment">
 
     <ScrollView
-        android:id="@+id/scroller"
+        android:id="@+id/scrollerOffers"
         android:layout_width="380dp"
         android:layout_height="700dp"
         android:contentDescription=" "

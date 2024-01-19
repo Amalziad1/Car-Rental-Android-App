@@ -4,19 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D0E5DC"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+    <ScrollView
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:contentDescription=" "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/myFragment"
+                android:name="com.project.drivr.ui.home.historyFragment"
+                android:layout_width="379dp"
+                android:layout_height="340dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout="@layout/fragment_history_fragment" />
+
+            <fragment
+                android:id="@+id/reservefragment"
+                android:name="com.project.drivr.ui.home.latestReservation"
+                android:layout_width="184dp"
+                android:layout_height="357dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/myFragment"
+                tools:layout="@layout/fragment_latest_reservation" />
+
+            <fragment
+                android:id="@+id/favFragment"
+                android:name="com.project.drivr.ui.home.latestAddedToFav"
+                android:layout_width="184dp"
+                android:layout_height="357dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/myFragment"
+                tools:layout="@layout/fragment_latest_added_to_fav" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

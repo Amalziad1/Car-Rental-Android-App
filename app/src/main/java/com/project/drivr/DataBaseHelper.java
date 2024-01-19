@@ -16,7 +16,14 @@ import java.util.Locale;
 
 
 public class DataBaseHelper extends SQLiteOpenHelper {
-
+    private static DataBaseHelper instance = null;
+    public static DataBaseHelper getInstance(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        if (instance != null) {
+            return instance;
+        }
+        instance = new DataBaseHelper(context, name, factory, version);
+        return instance;
+    }
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -30,7 +37,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTableCar);
         String createTableReservation = "CREATE TABLE IF NOT EXISTS Reserve(ID INTEGER PRIMARY KEY AUTOINCREMENT, DATE_RESERVED DATE, TIME_RESERVED TIME, VIN TEXT, EMAIL TEXT, FOREIGN KEY(VIN) REFERENCES Car(VIN),FOREIGN KEY(EMAIL) REFERENCES User(EMAIL) );";
         db.execSQL(createTableReservation);
-        String createTableFavorites = "CREATE TABLE IF NOT EXISTS Favorite( VIN TEXT, EMAIL TEXT, FOREIGN KEY(VIN) REFERENCES Car(VIN),FOREIGN KEY(EMAIL) REFERENCES User(EMAIL) ,PRIMARY KEY(VIN,EMAIL));";
+        String createTableFavorites = "CREATE TABLE IF NOT EXISTS Favorite( TIMED TIME,VIN TEXT, EMAIL TEXT, FOREIGN KEY(VIN) REFERENCES Car(VIN),FOREIGN KEY(EMAIL) REFERENCES User(EMAIL),PRIMARY KEY (VIN, EMAIL));";
         db.execSQL(createTableFavorites);
     }
 
@@ -153,8 +160,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             db.close();
             return rowsDeleted;
         } catch (Exception e) {
-            return -1; // Return a value that indicates an error
+            return -1;
         }
+    }
+    public Cursor getLatestReservation(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM Reserve WHERE EMAIL = ? ORDER BY DATE_RESERVED,TIME_RESERVED DESC LIMIT 1",
+                new String[]{email}
+        );
+        return cursor;
+    }
+    public Cursor getLatestFavorite(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM Favorite WHERE EMAIL = ? ORDER BY TIMED DESC LIMIT 1",
+                new String[]{email}
+        );
+        return cursor;
+    }
+    public boolean isFavoriteExist(String email, String VIN) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Favorite WHERE EMAIL=? AND VIN=?", new String[]{email, VIN});
+        boolean exists = cursor.getCount() > 0;
+        cursor.close();
+        return exists;
     }
 
 }

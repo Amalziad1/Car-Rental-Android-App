@@ -5,15 +5,24 @@ import android.os.Bundle;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,26 +34,31 @@ import com.squareup.picasso.Picasso;
 
 
 public class CarMenu extends Fragment {
+    private List<Car> carList;
+    private List<Car> filteredList;
     private String VIN;
     private String factory;
     private String type;
     private String img;
-    private  int model;
+    private int model;
     private double price;
     private String email;
+    private boolean exist;//
+
     public CarMenu() {
         // Required empty public constructor
     }
-    public static CarMenu newInstance(String VIN, String factory,String type,String img,int model,double price,String email) {
+
+    public static CarMenu newInstance(String VIN, String factory, String type, String img, int model, double price, String email) {
         CarMenu fragment = new CarMenu();
         Bundle args = new Bundle();
         args.putString("VIN", VIN);
         args.putString("factory", factory);
-        args.putString("type",type);
-        args.putString("img",img);
-        args.putDouble("price",price);
-        args.putInt("model",model);
-        args.putString("email",email);
+        args.putString("type", type);
+        args.putString("img", img);
+        args.putDouble("price", price);
+        args.putInt("model", model);
+        args.putString("email", email);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,25 +69,23 @@ public class CarMenu extends Fragment {
         if (getArguments() != null) {
             this.VIN = getArguments().getString("VIN");
             this.model = getArguments().getInt("model");
-            this.price=getArguments().getDouble("price");
-            this.img=getArguments().getString("img");
-            this.type=getArguments().getString("type");
-            this.factory=getArguments().getString("factory");
-            this.email=getArguments().getString("email");
+            this.price = getArguments().getDouble("price");
+            this.img = getArguments().getString("img");
+            this.type = getArguments().getString("type");
+            this.factory = getArguments().getString("factory");
+            this.email = getArguments().getString("email");
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_car_menu_frag, container, false);
-        TextView name=view.findViewById(R.id.menuCarName);
-        name.setText(factory+" : "+type);
-        ImageView imageview=view.findViewById(R.id.photoImageView);
-        Picasso.get()
-                .load(img)
-                .fit()
-                .into(imageview);
-        ConstraintLayout constraintLayout=view.findViewById(R.id.carDetailsConstraint);
+        TextView name = view.findViewById(R.id.menuCarName);
+        name.setText(factory + " : " + type);
+        ImageView imageview = view.findViewById(R.id.photoImageView);
+        Picasso.get().load(img).into(imageview);
+        ConstraintLayout constraintLayout = view.findViewById(R.id.carDetailsConstraint);
         constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,11 +100,10 @@ public class CarMenu extends Fragment {
                 startActivity(intent);
             }
         });
-
-        Button addFav=view.findViewById(R.id.AddFav);
-        Button addRes=view.findViewById(R.id.Reserve);
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity().getApplicationContext(),"registration",null,1);
-        Reservation reserve=new Reservation();
+        Button addFav = view.findViewById(R.id.AddFav);
+        Button addRes = view.findViewById(R.id.Reserve);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity().getApplicationContext(), "registration", null, 1);
+        Reservation reserve = new Reservation();
         long currentTimeMillis = System.currentTimeMillis();
         Date currentDate = new Date(currentTimeMillis);
         Time currentTime = new Time(currentDate.getTime());
@@ -103,16 +114,39 @@ public class CarMenu extends Fragment {
         addRes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataBaseHelper.insertReservation(reserve);
+//                dataBaseHelper.insertReservation(reserve);
+                PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, price, img, email, VIN);
+                popUpReservation.show(getChildFragmentManager(), "popup_fragment");
             }
         });
+        exist = dataBaseHelper.isFavoriteExist(email, VIN);
+        if (exist) {
+            addFav.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite_filled, 0, 0, 0);
+        } else {
+            addFav.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite, 0, 0, 0);
+        }
         addFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataBaseHelper.insertFavorite(email,VIN);
-                Toast.makeText(getActivity().getApplicationContext(), "Added to favorites", Toast.LENGTH_SHORT).show();
+                if (exist) {
+                    dataBaseHelper.removeFavorite(email, VIN);
+                    addFav.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite, 0, 0, 0);
+                    Toast.makeText(getActivity().getApplicationContext(), "Removed from your Favorites", Toast.LENGTH_SHORT).show();
+                    exist = false;
+                } else {
+                    dataBaseHelper.insertFavorite(email, VIN);
+                    addFav.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite_filled, 0, 0, 0);
+                    //Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.scale);
+
+                    Toast.makeText(getActivity().getApplicationContext(), "Added to your Favorites", Toast.LENGTH_SHORT).show();
+                    exist = true;
+                }
             }
         });
+
         return view;
     }
+
+
+
 }

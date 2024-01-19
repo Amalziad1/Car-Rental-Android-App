@@ -24,8 +24,6 @@ public class OffersFragment extends Fragment {
         binding = FragmentOffersBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // final TextView textView = binding.textOffers;
-        // reservationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

@@ -37,30 +37,24 @@ public class registration extends AppCompatActivity {
         Spinner spinnerCountry = findViewById(R.id.country);
         Spinner spinnerCity = findViewById(R.id.city);
         EditText editTextPhoneNumber = findViewById(R.id.phone);
-        EditText fname=findViewById(R.id.fname);
-        EditText lname=findViewById(R.id.lname);
-        EditText password=findViewById(R.id.password);
-        EditText email=findViewById(R.id.email);
-        EditText confirm=findViewById(R.id.confirmPassword);
+        EditText fname = findViewById(R.id.fname);
+        EditText lname = findViewById(R.id.lname);
+        EditText password = findViewById(R.id.password);
+        EditText email = findViewById(R.id.email);
+        EditText confirm = findViewById(R.id.confirmPassword);
         ConstraintLayout rootLayout = findViewById(R.id.root);
         CheckBox showPass = findViewById(R.id.checkBoxPass);
         CheckBox showConfirm = findViewById(R.id.checkBoxConfirm);
-        Button signup=findViewById(R.id.signup);
+        Button signup = findViewById(R.id.signup);
 
         //implementing gender spinner
-        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.gender_array, //in strings.xml in values
-                android.R.layout.simple_spinner_item
-        );
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender_array, //in strings.xml in values
+                android.R.layout.simple_spinner_item);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGender.setAdapter(genderAdapter);
         //implementing countries spinner
-        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.country_array,//in strings.xml in values
-                android.R.layout.simple_spinner_item
-        );
+        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this, R.array.country_array,//in strings.xml in values
+                android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCountry.setAdapter(countryAdapter);
         //implementing cities spinner & phone number
@@ -68,37 +62,22 @@ public class registration extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedCountry = parentView.getItemAtPosition(position).toString();
-                if(selectedCountry.equals("Select Country")){
-                    selectedCountry=selectedCountry.replaceAll("\\s", "");
-                    int selected = getResources().getIdentifier(
-                            selectedCountry.toLowerCase(),
-                            "array",
-                            getPackageName()
-                    );
-                    ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(
-                            registration.this,
-                            selected,
-                            android.R.layout.simple_spinner_item
-                    );
+                if (selectedCountry.equals("Select Country")) {
+                    selectedCountry = selectedCountry.replaceAll("\\s", "");
+                    int selected = getResources().getIdentifier(selectedCountry.toLowerCase(), "array", getPackageName());
+                    ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(registration.this, selected, android.R.layout.simple_spinner_item);
                     cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerCity.setAdapter(cityAdapter);
-                }else{
+                } else {
                     String zipCode = getZipCodeForCountry(selectedCountry);
                     editTextPhoneNumber.setText("00" + zipCode);
-                    int citiesArrayResourceId = getResources().getIdentifier(
-                            selectedCountry.toLowerCase().concat("_cities"),
-                            "array",
-                            getPackageName()
-                    );
-                    ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(
-                            registration.this,
-                            citiesArrayResourceId,
-                            android.R.layout.simple_spinner_item
-                    );
+                    int citiesArrayResourceId = getResources().getIdentifier(selectedCountry.toLowerCase().concat("_cities"), "array", getPackageName());
+                    ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(registration.this, citiesArrayResourceId, android.R.layout.simple_spinner_item);
                     cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerCity.setAdapter(cityAdapter);
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
             }
@@ -107,9 +86,11 @@ public class registration extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
                 String selectedCountry = spinnerCountry.getSelectedItem().toString();
@@ -148,62 +129,70 @@ public class registration extends AppCompatActivity {
             }
         });
         signup.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                 hideKeyboard();
                 //Toast.makeText(getApplicationContext(), "============", Toast.LENGTH_SHORT).show();
-                 String firstName=fname.getText().toString();
-                 String lastName=lname.getText().toString();
-                 String Email=email.getText().toString();
-                 String Country=spinnerCountry.getSelectedItem().toString();
-                 String City=spinnerCity.getSelectedItem().toString();
-                 String Password=password.getText().toString();
-                 String confirmPassword=confirm.getText().toString();
-                                          String phoneNumber=editTextPhoneNumber.getText().toString();
-                                          String gender=spinnerGender.getSelectedItem().toString();
-                                          int flag=0;
-                                          if(firstName.length()<3){
-                                              fname.setError("Must be at least 3 characters");
-                                              flag++;
-                                          }if(lastName.length()<3){
-                                              lname.setError("Must be at least 3 characters");
-                                              flag++;
-                                          }if(!validateEmailFormat(Email)){
-                                              email.setError("Invalid email format");
-                                              flag++;
-                                          }if(Country.equalsIgnoreCase("Select Country") || City.equalsIgnoreCase("Select City")|| City.equals(null)){
-                                              flag++;
-                                          }if(!validatePassword(Password)){
-                                              password.setError("Must be at least 5 chars, 1 character, 1 number, and 1 special character");
-                                              flag++;
-                                          }if(phoneNumber.length()<13){
-                                              editTextPhoneNumber.setError("Must be 13 length");
-                                              flag++;
-                                          }if(!Password.equals(confirmPassword)){
-                                              confirm.setError("Password does not match");
-                                              flag++;
-                                          }
-                                          if(flag>0){
-                                              Toast.makeText(getApplicationContext(), "Incomplete data", Toast.LENGTH_SHORT).show();
-                                          }else{
-                                              Password=hashPassword(Password);
-                                              long number=Long.parseLong(phoneNumber);
-                                              User user=new User(firstName,lastName,gender,Email,Country,City,Password,number);
-                                              DataBaseHelper dataBaseHelper = new DataBaseHelper(registration.this,"registration",null,1);
-                                              if(dataBaseHelper.isUserWithEmailExists(Email)){
-                                                  Toast.makeText(registration.this, "User with this email exists", Toast.LENGTH_SHORT).show();
-                                              }else{
-                                                  dataBaseHelper.insertUser(user);
-                                                  Toast.makeText(registration.this, "User added successfully", Toast.LENGTH_SHORT).show();
-                                                  //opening another ui
-                                                  Intent intent = new Intent(registration.this, LoginSignup.class);
-                                                  startActivity(intent);
-                                                  finish();
-                                              }
-                                          }
-                                      }
-                                  }
-        );
+                String firstName = fname.getText().toString();
+                String lastName = lname.getText().toString();
+                String Email = email.getText().toString().toLowerCase().replaceAll("\\s", "");
+                ;
+                String Country = spinnerCountry.getSelectedItem().toString();
+                String City = spinnerCity.getSelectedItem().toString();
+                String Password = password.getText().toString();
+                String confirmPassword = confirm.getText().toString();
+                String phoneNumber = editTextPhoneNumber.getText().toString();
+                String gender = spinnerGender.getSelectedItem().toString();
+                int flag = 0;
+                if (firstName.length() < 3) {
+                    fname.setError("Must be at least 3 characters");
+                    flag++;
+                }
+                if (lastName.length() < 3) {
+                    lname.setError("Must be at least 3 characters");
+                    flag++;
+                }
+                if (!validateEmailFormat(Email)) {
+                    email.setError("Invalid email format");
+                    flag++;
+                }
+                if (Country.equalsIgnoreCase("Select Country") || City.equalsIgnoreCase("Select City") || City.equals(null)) {
+                    flag++;
+                }
+                if (!validatePassword(Password)) {
+                    password.setError("Must be at least 5 chars, 1 character, 1 number, and 1 special character");
+                    flag++;
+                }
+                if (phoneNumber.length() < 13) {
+                    editTextPhoneNumber.setError("Must be 13 length");
+                    flag++;
+                }
+                if (!Password.equals(confirmPassword)) {
+                    confirm.setError("Password does not match");
+                    flag++;
+                }
+                if (flag > 0) {
+                    Toast.makeText(getApplicationContext(), "Incomplete data", Toast.LENGTH_SHORT).show();
+                } else {
+                    Password = hashPassword(Password);
+                    long number = Long.parseLong(phoneNumber);
+                    User user = new User(firstName, lastName, gender, Email, Country, City, Password, number);
+                    DataBaseHelper dataBaseHelper = new DataBaseHelper(registration.this, "registration", null, 1);
+                    if (dataBaseHelper.isUserWithEmailExists(Email)) {
+                        Toast.makeText(registration.this, "User with this email exists", Toast.LENGTH_SHORT).show();
+                    } else {
+                        dataBaseHelper.insertUser(user);
+                        Toast.makeText(registration.this, "User added successfully", Toast.LENGTH_SHORT).show();
+                        //opening another ui
+                        Intent intent = new Intent(registration.this, login.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            }
+        });
     }
+
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -219,6 +208,7 @@ public class registration extends AppCompatActivity {
             return null;
         }
     }
+
     private boolean validatePassword(String password) {
         if (password.length() < 5) {
             return false;
@@ -230,6 +220,7 @@ public class registration extends AppCompatActivity {
         }
         return true;
     }
+
     public static boolean validateEmailFormat(String email) {
         String emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -248,18 +239,16 @@ public class registration extends AppCompatActivity {
         }
         return false;
     }
+
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (getCurrentFocus() != null) {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
+
     private String getZipCodeForCountry(String country) {
-        int zipCodeResourceId = getResources().getIdentifier(
-                country + "_zip_code",
-                "string",
-                getPackageName()
-        );
+        int zipCodeResourceId = getResources().getIdentifier(country + "_zip_code", "string", getPackageName());
         return getString(zipCodeResourceId);
     }
 }

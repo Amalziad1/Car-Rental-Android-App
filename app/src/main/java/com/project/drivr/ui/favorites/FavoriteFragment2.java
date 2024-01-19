@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.project.drivr.DataBaseHelper;
 import com.project.drivr.R;
 
+import com.project.drivr.ui.car_menu.PopUpReservation;
 import com.project.drivr.ui.car_menu.viewCarDetails;
 import com.project.drivr.ui.reservations.Reservation;
 import com.squareup.picasso.Picasso;
@@ -109,15 +110,17 @@ public class FavoriteFragment2 extends Fragment {
         reserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Reservation obj=new Reservation();
-                long currentTimeMillis = System.currentTimeMillis();
-                Date currentDate = new Date(currentTimeMillis);
-                Time currentTime = new Time(currentDate.getTime());
-                obj.setDate(currentDate);
-                obj.setTime(currentTime);
-                obj.setEmail(email);
-                obj.setVIN(VIN);
-                dataBaseHelper.insertReservation(obj);
+//                Reservation obj=new Reservation();
+//                long currentTimeMillis = System.currentTimeMillis();
+//                Date currentDate = new Date(currentTimeMillis);
+//                Time currentTime = new Time(currentDate.getTime());
+//                obj.setDate(currentDate);
+//                obj.setTime(currentTime);
+//                obj.setEmail(email);
+//                obj.setVIN(VIN);
+//                dataBaseHelper.insertReservation(obj);
+                PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, price, img, email, VIN);
+                popUpReservation.show(getChildFragmentManager(), "popup_fragment");
             }
         });
 

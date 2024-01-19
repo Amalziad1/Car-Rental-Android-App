@@ -16,22 +16,32 @@ public class ConnectionAsync extends AsyncTask<String, String,String> {
     }
     @Override
     protected void onPreExecute() {
-        ((Connection) activity).setButtonText("connecting");
+        ((Connection) activity).setButtonText("Connecting");
         super.onPreExecute();
         ((Connection) activity).setProgress(true);
     }
     @Override
     protected String doInBackground(String... params) {
-        String data = HttpManager.getData(params[0]);
-        return data;
+        try {
+            String data = HttpManager.getData(params[0]);
+            return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         ((Connection) activity).setProgress(false);
-        ((Connection) activity).setButtonText("connected");
-        List<Car> cars = CarJsonParser.getObjectFromJson(s);
-        ((Connection) activity).fillCars(cars);
-        ((Connection) activity).moveToNextIntent();
+        if (s != null) {
+            ((Connection) activity).setButtonText("Connected");
+            List<Car> cars = CarJsonParser.getObjectFromJson(s);
+            ((Connection) activity).fillCars(cars);
+            ((Connection) activity).moveToNextIntent();
+        } else {
+            ((Connection) activity).setButtonText("Connection Failed");
+        }
     }
+
 }
