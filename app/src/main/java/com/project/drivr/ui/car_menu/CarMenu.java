@@ -1,5 +1,8 @@
 package com.project.drivr.ui.car_menu;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -7,22 +10,16 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,21 +82,43 @@ public class CarMenu extends Fragment {
         name.setText(factory + " : " + type);
         ImageView imageview = view.findViewById(R.id.photoImageView);
         Picasso.get().load(img).into(imageview);
+        ObjectAnimator rotateAnimator = (ObjectAnimator) AnimatorInflater.loadAnimator(getActivity().getApplicationContext(), R.animator.rotation_3d);
+        rotateAnimator.setTarget(imageview);
+        rotateAnimator.start();
         ConstraintLayout constraintLayout = view.findViewById(R.id.carDetailsConstraint);
         constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), viewCarDetails.class);
-                intent.putExtra("factory", factory);
-                intent.putExtra("type", type);
-                intent.putExtra("model", model);
-                intent.putExtra("price", price);
-                intent.putExtra("img", img);
-                intent.putExtra("email", email);
-                intent.putExtra("VIN", VIN);
-                startActivity(intent);
+                Animation scaleAnimation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.scale);
+                scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // Animation started
+                    }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // Animation ended, start the new activity
+                        Intent intent = new Intent(getActivity().getApplicationContext(), viewCarDetails.class);
+                        intent.putExtra("factory", factory);
+                        intent.putExtra("type", type);
+                        intent.putExtra("model", model);
+                        intent.putExtra("price", price);
+                        intent.putExtra("img", img);
+                        intent.putExtra("email", email);
+                        intent.putExtra("VIN", VIN);
+                        startActivity(intent);
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // Animation repeated
+                    }
+                });
+
+                // Start the animation
+                constraintLayout.startAnimation(scaleAnimation);
             }
         });
+
         Button addFav=view.findViewById(R.id.AddFav);
         Button addRes=view.findViewById(R.id.Reserve);
         DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(getActivity().getApplicationContext(),"registration",null,1);
@@ -136,8 +155,6 @@ public class CarMenu extends Fragment {
                 } else {
                     dataBaseHelper.insertFavorite(email, VIN);
                     addFav.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite_filled, 0, 0, 0);
-                    //Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.scale);
-
                     Toast.makeText(getActivity().getApplicationContext(), "Added to your Favorites", Toast.LENGTH_SHORT).show();
                     exist = true;
                 }

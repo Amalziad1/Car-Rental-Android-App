@@ -13,6 +13,7 @@ import com.project.drivr.ui.reservations.Reservation;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Random;
 
 
 public class DataBaseHelper extends SQLiteOpenHelper {
@@ -70,9 +71,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("PRICE", car.getPrice());
         contentValues.put("MODEL", car.getModel());
         contentValues.put("IMG", car.getImgURL());
-        sqLiteDatabase.insert("Car", null, contentValues);
+        long rowId = sqLiteDatabase.insertWithOnConflict("Car", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         sqLiteDatabase.close();
     }
+
     public void insertReservation(Reservation reserve) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -186,6 +188,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         boolean exists = cursor.getCount() > 0;
         cursor.close();
         return exists;
+    }
+    public Cursor getRandomCarCursor() {
+        SQLiteDatabase db = getReadableDatabase();
+        String countQuery = "SELECT COUNT(*) FROM Car";
+        Cursor countCursor = db.rawQuery(countQuery, null);
+        countCursor.moveToFirst();
+        int rowCount = countCursor.getInt(0);
+        countCursor.close();
+        //generate a random index
+        Random random = new Random();
+        int randomIndex = random.nextInt(rowCount);
+        String randomQuery = "SELECT * FROM Car LIMIT 1 OFFSET " + randomIndex;
+        return db.rawQuery(randomQuery, null);
     }
 
 }

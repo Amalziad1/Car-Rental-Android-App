@@ -48,18 +48,11 @@ public class viewCarDetails extends AppCompatActivity {
         Button addRes=findViewById(R.id.dAddRes);
 
         DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(viewCarDetails.this,"registration",null,1);
-        Reservation reserve=new Reservation();
-        long currentTimeMillis = System.currentTimeMillis();
-        Date currentDate = new Date(currentTimeMillis);
-        Time currentTime = new Time(currentDate.getTime());
-        reserve.setDate(currentDate);
-        reserve.setTime(currentTime);
-        reserve.setEmail(email);
-        reserve.setVIN(VIN);
         addRes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataBaseHelper.insertReservation(reserve);
+                PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, price, img, email, VIN);
+                popUpReservation.show(getSupportFragmentManager(), "popup_fragment");
             }
         });
         addFav.setOnClickListener(new View.OnClickListener() {

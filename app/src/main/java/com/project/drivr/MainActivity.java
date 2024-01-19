@@ -1,5 +1,6 @@
 package com.project.drivr;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
@@ -7,12 +8,15 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,7 +34,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class MainActivity extends AppCompatActivity {
-
+//implements NavigationView.OnNavigationItemSelectedListener
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private SharedPrefManager sharedPrefManager;
@@ -76,7 +80,15 @@ public class MainActivity extends AppCompatActivity {
         else {
             Log.e("PFP:", "Bitmap does not exist.");
         }
+//        navigationView.setNavigationItemSelectedListener(this);
     }
+
+//    private void logoutUser() {
+//        Intent intent = new Intent(MainActivity.this, login.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//        finish();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,4 +103,16 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+//    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.nav_log_out) {
+//            logoutUser();
+//            return true;
+//        }
+//        DrawerLayout drawer = binding.drawerLayout;
+//        drawer.closeDrawer(GravityCompat.START);
+//        return true;
+//    }
 }

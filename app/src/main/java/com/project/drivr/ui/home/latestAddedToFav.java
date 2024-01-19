@@ -89,7 +89,7 @@ public class latestAddedToFav extends Fragment {
                         Picasso.get().load(img).into(imageView);//to display images
                         carName.setText(factory+"-"+type+"-"+String.valueOf(model));
                         priceText.setText(String.valueOf(price)+"$/day");
-                        dateText.setText(date+"-"+time);
+                        dateText.setText("");
                         this.factory=factory;
                         this.img=img;
                         this.type=type;

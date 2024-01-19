@@ -6,10 +6,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.fragment.app.DialogFragment;
 
+import com.project.drivr.DataBaseHelper;
 import com.project.drivr.R;
+import com.project.drivr.ui.reservations.Reservation;
 import com.squareup.picasso.Picasso;
+
+import java.sql.Time;
+import java.util.Date;
 
 public class PopUpReservation extends DialogFragment {
 
@@ -61,10 +68,21 @@ public class PopUpReservation extends DialogFragment {
         carName.setText(factory+"-"+type+"-"+String.valueOf(model));
         priceText.setText(price+"$/day");
         Picasso.get().load(img).into(imageView);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(getActivity().getApplicationContext(),"registration",null,1);
         reserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //database to insert to reserve
+                Reservation reserve=new Reservation();
+                long currentTimeMillis = System.currentTimeMillis();
+                Date currentDate = new Date(currentTimeMillis);
+                Time currentTime = new Time(currentDate.getTime());
+                reserve.setDate(currentDate);
+                reserve.setTime(currentTime);
+                reserve.setEmail(email);
+                reserve.setVIN(VIN);
+                dataBaseHelper.insertReservation(reserve);
+                Toast.makeText(getActivity().getApplicationContext(), "Congrats on your Reservation!", Toast.LENGTH_SHORT).show();
+                dismiss();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
