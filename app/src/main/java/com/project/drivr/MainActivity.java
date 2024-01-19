@@ -1,15 +1,19 @@
 package com.project.drivr;
 
-import static android.content.Intent.getIntent;
-
-import android.content.Intent;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.widget.ImageViewCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,10 +23,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.drivr.databinding.ActivityMainBinding;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private SharedPrefManager sharedPrefManager;
+    private DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +56,26 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        sharedPrefManager = SharedPrefManager.getInstance(this);
+        String userName = sharedPrefManager.readString("userName", null);
+        dataBaseHelper = DataBaseHelper.getInstance(this, "registration", null, 1);
+        Cursor cursor = dataBaseHelper.getUserByEmail(userName);
+        cursor.moveToLast();
+        int firstNameIndex = cursor.getColumnIndexOrThrow("FIRSTNAME");
+        String name = cursor.getString(firstNameIndex) + " " + cursor.getString(firstNameIndex + 1);
+        String PFPpath = cursor.getString(cursor.getColumnIndexOrThrow("PICTURE_PATH"));
+        TextView nameTextView = navigationView.getHeaderView(0).findViewById(R.id.userNameTextView);
+        nameTextView.setText(name);
+        TextView emailTextView = navigationView.getHeaderView(0).findViewById(R.id.emailTextView);
+        emailTextView.setText(userName);
+        ImageView profilePictureView = navigationView.getHeaderView(0).findViewById(R.id.profilePictureImageView);
+        Bitmap myBitmap = BitmapFactory.decodeFile(PFPpath);
+        if (myBitmap != null) {
+                profilePictureView.setImageBitmap(myBitmap);
+        }
+        else {
+            Log.e("PFP:", "Bitmap does not exist.");
+        }
     }
 
     @Override
@@ -59,6 +91,4 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
-
 }

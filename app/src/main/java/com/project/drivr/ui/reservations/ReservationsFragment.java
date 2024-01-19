@@ -43,7 +43,7 @@ public class ReservationsFragment extends Fragment {
         sharedPrefManager=SharedPrefManager.getInstance(getActivity().getApplicationContext());
         String userEmail=sharedPrefManager.readString("userName","noValue");
 
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity().getApplicationContext(),"registration",null,1);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(getActivity().getApplicationContext(),"registration",null,1);
         final FragmentManager fragmentManager =  getParentFragmentManager();
         Cursor rows = dataBaseHelper.getReservation(userEmail);
         try {

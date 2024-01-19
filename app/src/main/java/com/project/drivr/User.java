@@ -1,5 +1,7 @@
 package com.project.drivr;
 
+import android.content.Context;
+
 public class User {
     private String gender;
     private String firstName;
@@ -9,10 +11,11 @@ public class User {
     private String city;
     private String password;
     private long phoneNumber;
+    private String picturePath;
     public User(){
 
     }
-    public User(String firstName,String lastName,String gender,String email,String country,String city, String password,long phoneNumber){
+    public User(String firstName,String lastName,String gender,String email,String country,String city, String password,long phoneNumber, String picturePath){
         this.gender=gender;
         this.city=city;
         this.country=country;
@@ -21,6 +24,7 @@ public class User {
         this.lastName=lastName;
         this.password=password;
         this.phoneNumber=phoneNumber;
+        this.picturePath=picturePath;
     }
 
     public long getPhoneNumber() {
@@ -52,5 +56,45 @@ public class User {
 
     public String getGender() {
         return gender;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPhoneNumber(long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 }

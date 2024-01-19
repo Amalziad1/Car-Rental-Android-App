@@ -44,7 +44,7 @@ public class Connection extends AppCompatActivity {
         button.setText(text);
     }
     public void fillCars(List<Car> car) {
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(Connection.this,"registration",null,1);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(Connection.this,"registration",null,1);
         for (int i = 0; i < car.size(); i++) {
             dataBaseHelper.insertCar(car.get(i));
         }

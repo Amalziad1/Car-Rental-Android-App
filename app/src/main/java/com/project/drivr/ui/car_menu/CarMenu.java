@@ -100,10 +100,10 @@ public class CarMenu extends Fragment {
                 startActivity(intent);
             }
         });
-        Button addFav = view.findViewById(R.id.AddFav);
-        Button addRes = view.findViewById(R.id.Reserve);
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity().getApplicationContext(), "registration", null, 1);
-        Reservation reserve = new Reservation();
+        Button addFav=view.findViewById(R.id.AddFav);
+        Button addRes=view.findViewById(R.id.Reserve);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(getActivity().getApplicationContext(),"registration",null,1);
+        Reservation reserve=new Reservation();
         long currentTimeMillis = System.currentTimeMillis();
         Date currentDate = new Date(currentTimeMillis);
         Time currentTime = new Time(currentDate.getTime());

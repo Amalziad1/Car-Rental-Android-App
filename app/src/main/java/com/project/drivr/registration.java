@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,7 +22,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -46,7 +52,6 @@ public class registration extends AppCompatActivity {
         CheckBox showPass = findViewById(R.id.checkBoxPass);
         CheckBox showConfirm = findViewById(R.id.checkBoxConfirm);
         Button signup = findViewById(R.id.signup);
-
         //implementing gender spinner
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender_array, //in strings.xml in values
                 android.R.layout.simple_spinner_item);
@@ -129,6 +134,7 @@ public class registration extends AppCompatActivity {
             }
         });
         signup.setOnClickListener(new View.OnClickListener() {
+            //<<<<<<< HEAD
             @Override
             public void onClick(View view) {
                 hideKeyboard();
@@ -136,7 +142,6 @@ public class registration extends AppCompatActivity {
                 String firstName = fname.getText().toString();
                 String lastName = lname.getText().toString();
                 String Email = email.getText().toString().toLowerCase().replaceAll("\\s", "");
-                ;
                 String Country = spinnerCountry.getSelectedItem().toString();
                 String City = spinnerCity.getSelectedItem().toString();
                 String Password = password.getText().toString();
@@ -176,8 +181,10 @@ public class registration extends AppCompatActivity {
                 } else {
                     Password = hashPassword(Password);
                     long number = Long.parseLong(phoneNumber);
-                    User user = new User(firstName, lastName, gender, Email, Country, City, Password, number);
-                    DataBaseHelper dataBaseHelper = new DataBaseHelper(registration.this, "registration", null, 1);
+                    String defaultPFPpath = getApplicationContext().getFilesDir().toString() + "/default_profile_picture.jpg";
+                    copyPFPToFilesDir(R.raw.default_profile_picture, defaultPFPpath);
+                    User user = new User(firstName, lastName, gender, Email, Country, City, Password, number, defaultPFPpath);
+                    DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(registration.this, "registration", null, 1);
                     if (dataBaseHelper.isUserWithEmailExists(Email)) {
                         Toast.makeText(registration.this, "User with this email exists", Toast.LENGTH_SHORT).show();
                     } else {
@@ -191,6 +198,8 @@ public class registration extends AppCompatActivity {
                 }
             }
         });
+//=======
+//>>>>>>> 7d885ae8eeebb8e9695da28551e469d3cd12ab41
     }
 
     private String hashPassword(String password) {
@@ -250,5 +259,16 @@ public class registration extends AppCompatActivity {
     private String getZipCodeForCountry(String country) {
         int zipCodeResourceId = getResources().getIdentifier(country + "_zip_code", "string", getPackageName());
         return getString(zipCodeResourceId);
+    }
+
+    private void copyPFPToFilesDir(int resourceID, String defaultPFPpath) {
+        InputStream defaultPFP = getResources().openRawResource(resourceID);
+        try {
+            Files.copy(defaultPFP, Paths.get(defaultPFPpath));
+        } catch (IOException e) {
+            Log.d("IOException:", "During default pfp copy", e);
+        } catch (SecurityException e) {
+            Log.d("SecurityException:", "During default pfp copy", e);
+        }
     }
 }

@@ -32,13 +32,13 @@ public class login extends AppCompatActivity {
         EditText email = findViewById(R.id.emailLog);
         EditText password = findViewById(R.id.pass);
         CheckBox checkBoxRememberMe = findViewById(R.id.remember);
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(login.this, "registration", null, 1);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(login.this, "registration", null, 1);
         Button login = findViewById(R.id.login);
         sharedPrefManager = SharedPrefManager.getInstance(this);
-        String status=sharedPrefManager.readString("rememberMe",null);
-        if(status!=null && status.equals("yes")){
-            email.setText(sharedPrefManager.readString("userName",""));
-            password.setText(sharedPrefManager.readString("password",""));
+        String status = sharedPrefManager.readString("rememberMe", null);
+        if (status != null && status.equals("yes")) {
+            email.setText(sharedPrefManager.readString("userName", ""));
+            password.setText(sharedPrefManager.readString("password", ""));
             checkBoxRememberMe.setChecked(true);
         }
         login.setOnClickListener(new View.OnClickListener() {
@@ -109,22 +109,4 @@ public class login extends AppCompatActivity {
             return null;
         }
     }
-//    private SharedPreferences storeCredentials(String email, String password) {//yes to save data if 1, 0 if not
-//        SharedPreferences preferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.putString("storedEmail", email);
-//        editor.putString("storedPassword", password);
-////        editor.putInt("rememberMe",yes);
-//        editor.apply();
-//        return preferences;
-//    }
-//
-//    private void clearStoredCredentials() {
-//        //clear stored credentials if "Remember Me" is unchecked
-//        SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.remove("storedEmail");
-//        editor.remove("storedPassword");
-//        editor.apply();
-//    }
 }
