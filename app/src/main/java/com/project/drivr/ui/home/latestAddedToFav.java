@@ -72,7 +72,7 @@ public class latestAddedToFav extends Fragment {
         //handling database
         sharedPrefManager= SharedPrefManager.getInstance(getActivity().getApplicationContext());
         String userEmail=sharedPrefManager.readString("userName","noValue");
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity().getApplicationContext(),"registration",null,1);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(getActivity().getApplicationContext(),"registration",null,1);
         Cursor fav=dataBaseHelper.getLatestFavorite(userEmail);
         try{
             if (fav != null && fav.getCount() > 0) {

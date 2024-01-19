@@ -77,7 +77,7 @@ public class FavoriteFragment2 extends Fragment {
         Picasso.get().load(img).into(imageview);//to display images
         Button unFav=view.findViewById(R.id.button3);
         Button reserve=view.findViewById(R.id.button2);
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity().getApplicationContext(),"registration",null,1);
+        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(getActivity().getApplicationContext(),"registration",null,1);
         final FragmentManager fragmentManager =  getParentFragmentManager();
         unFav.setOnClickListener(new View.OnClickListener() {
             @Override
