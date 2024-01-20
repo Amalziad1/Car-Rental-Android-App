@@ -62,6 +62,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.insert("User", null, contentValues);
         sqLiteDatabase.close();
     }
+    public void updateUser(User user) {
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("EMAIL", user.getEmail());
+        contentValues.put("FIRSTNAME", user.getFirstName());
+        contentValues.put("LASTNAME", user.getLastName());
+        contentValues.put("GENDER", user.getGender());
+        contentValues.put("COUNTRY", user.getCountry());
+        contentValues.put("CITY", user.getCity());
+        contentValues.put("PASSWORD", user.getPassword());
+        contentValues.put("PHONE", user.getPhoneNumber());
+        contentValues.put("PICTURE_PATH", user.getPicturePath());
+        String[]  whereArgs = {user.getEmail()};
+        sqLiteDatabase.update("User", contentValues, "EMAIL = ?", whereArgs);
+    }
     public void insertCar(Car car) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();

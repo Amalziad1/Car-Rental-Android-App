@@ -24,7 +24,6 @@ public class ProfileViewModel extends ViewModel {
     private String email;
     private String password;
     private String retypedPassword;
-    private Application application;
 
     public String getFirstName() {
         return firstName;
@@ -99,20 +98,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
 
-    public ProfileViewModel(Application application) {
-        this.application = application;
-    }
-
-    public void UpdateProfileInformation() {
-        Context context;
-        SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(application.getApplicationContext());
-        String userName = sharedPrefManager.readString("userName", null);
-        DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(application.getApplicationContext(), "registration", null, 1);
-        Cursor cursor = dataBaseHelper.getUserByEmail(userName);
-        cursor.moveToLast();
-        int firstNameIndex = cursor.getColumnIndexOrThrow("FIRSTNAME");
-        String name = cursor.getString(firstNameIndex) + " " + cursor.getString(firstNameIndex + 1);
-        String PFPpath = cursor.getString(cursor.getColumnIndexOrThrow("PICTURE_PATH"));
+    public ProfileViewModel() {
     }
 
 }
