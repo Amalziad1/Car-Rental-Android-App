@@ -26,6 +26,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.drivr.databinding.ActivityMainBinding;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,13 +34,29 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI{
 //implements NavigationView.OnNavigationItemSelectedListener
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private SharedPrefManager sharedPrefManager;
     private DataBaseHelper dataBaseHelper;
-
+    private NavigationView navigationView;
+    @Override
+    public void updateUserInfoUI(User user) {
+        TextView nameTextView = navigationView.getHeaderView(0).findViewById(R.id.userNameTextView);
+        nameTextView.setText(user.getFirstName() + " " + user.getLastName());
+        TextView emailTextView = navigationView.getHeaderView(0).findViewById(R.id.emailTextView);
+        emailTextView.setText(user.getEmail());
+        ImageView profilePictureView = navigationView.getHeaderView(0).findViewById(R.id.profilePictureImageView);
+        File file = new File(user.getPicturePath());
+        if (file.isFile()) {
+            Picasso.get().load(file).into(profilePictureView);
+            Log.e("UI:", "Navigation drawer UI user info updated");
+        }
+        else {
+            Log.e("PFP:", "Bitmap does not exist.");
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
+        navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -60,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        // Fetch data
         sharedPrefManager = SharedPrefManager.getInstance(this);
         String userName = sharedPrefManager.readString("userName", null);
         dataBaseHelper = DataBaseHelper.getInstance(this, "registration", null, 1);
@@ -68,19 +86,21 @@ public class MainActivity extends AppCompatActivity {
         int firstNameIndex = cursor.getColumnIndexOrThrow("FIRSTNAME");
         String name = cursor.getString(firstNameIndex) + " " + cursor.getString(firstNameIndex + 1);
         String PFPpath = cursor.getString(cursor.getColumnIndexOrThrow("PICTURE_PATH"));
+
+        // Update UI elements
         TextView nameTextView = navigationView.getHeaderView(0).findViewById(R.id.userNameTextView);
         nameTextView.setText(name);
         TextView emailTextView = navigationView.getHeaderView(0).findViewById(R.id.emailTextView);
         emailTextView.setText(userName);
         ImageView profilePictureView = navigationView.getHeaderView(0).findViewById(R.id.profilePictureImageView);
-        Bitmap myBitmap = BitmapFactory.decodeFile(PFPpath);
-        if (myBitmap != null) {
-                profilePictureView.setImageBitmap(myBitmap);
+        File file = new File(PFPpath);
+        if (file.isFile()) {
+            Picasso.get().load(file).into(profilePictureView);
+            Log.e("UI:", "Navigation drawer UI user info updated");
         }
         else {
             Log.e("PFP:", "Bitmap does not exist.");
         }
-//        navigationView.setNavigationItemSelectedListener(this);
     }
 
 //    private void logoutUser() {

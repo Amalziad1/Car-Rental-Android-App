@@ -56,13 +56,19 @@ import android.Manifest;
 import com.project.drivr.MainActivity;
 import com.project.drivr.R;
 import com.project.drivr.SharedPrefManager;
+import com.project.drivr.UpdateUserInfoUI;
 import com.project.drivr.User;
 import com.project.drivr.databinding.FragmentProfileBinding;
 import com.project.drivr.registration;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -78,7 +84,7 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     ImageView profilePictureView;
     String userName;
-    String imagePath;
+    Uri imageURI;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -170,10 +176,9 @@ public class ProfileFragment extends Fragment {
         lname.setText(cursor.getString(firstNameIndex + 1));
         spinnerGender.setSelection(genderAdapter.getPosition(cursor.getString(cursor.getColumnIndexOrThrow("GENDER"))));
         spinnerCountry.setSelection(countryAdapter.getPosition(cursor.getString(cursor.getColumnIndexOrThrow("COUNTRY"))));
-        editTextPhoneNumber.setText(cursor.getString(cursor.getColumnIndexOrThrow("PHONE")));
-        Bitmap myBitmap = BitmapFactory.decodeFile(PFPpath);
-        if (myBitmap != null) {
-            profilePictureView.setImageBitmap(myBitmap);
+        File file = new File(PFPpath);
+        if (file != null) {
+            Picasso.get().load(file).into(profilePictureView);
         }
         else {
             Log.e("PFP:", "Bitmap does not exist.");
@@ -265,10 +270,11 @@ public class ProfileFragment extends Fragment {
                     Password=hashPassword(Password);
                     long number=Long.parseLong(phoneNumber);
                     String newPfpPath;
-                    if (imagePath != null) {
-                        newPfpPath = requireActivity().getFilesDir().toString() + "/" + Paths.get(imagePath).getFileName();
-                        copyImageToFilesDir(Paths.get(imagePath), newPfpPath);
-                        Log.d("Image copy:", "From" + imagePath + "to: " + newPfpPath);
+                    if (imageURI != null) {
+                        File file = new File(Objects.requireNonNull(imageURI.getPath()));
+                        newPfpPath = requireActivity().getFilesDir().toString() + "/" + Paths.get(file.getAbsolutePath()).getFileName();
+                        copyImageToFilesDir(imageURI, newPfpPath);
+                        Log.d("Image copy:", "From" + file.getAbsolutePath() + " to: " + newPfpPath);
                     }
                     else {
                         newPfpPath = PFPpath;
@@ -276,12 +282,13 @@ public class ProfileFragment extends Fragment {
                     User user=new User(firstName, lastName, gender, userName, Country, City, Password, number, newPfpPath);
                     DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(requireActivity().getApplicationContext(),"registration",null,1);
                     dataBaseHelper.updateUser(user);
+                    UpdateUserInfoUI callback = (UpdateUserInfoUI) requireActivity();
+                    callback.updateUserInfoUI(user);
                     Toast.makeText(requireActivity().getApplicationContext(), "User information updated successfully", Toast.LENGTH_SHORT).show();
                 }
             }
-      }
-        );
-
+        });
+        editTextPhoneNumber.setText(cursor.getString(cursor.getColumnIndexOrThrow("PHONE")));
         return root;
     }
 
@@ -393,13 +400,9 @@ public class ProfileFragment extends Fragment {
             // SELECT_PICTURE constant
             if (requestCode == 200) {
                 // Get the url of the image from data
-                Uri selectedImageUri = data.getData();
-                if (null != selectedImageUri) {
-                    // update the preview image in the layout
-                    profilePictureView.setImageURI(selectedImageUri);
-                    String[] path = Objects.requireNonNull(selectedImageUri.getPath()).split(":");
-                    imagePath = path[path.length - 1];
-                }
+                imageURI = data.getData();
+                Picasso.get().load(imageURI).into(profilePictureView);
+                Log.d("PFP:", imageURI.getPath());
             }
         }
     }
@@ -417,13 +420,26 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(requireActivity().getApplicationContext(), "Storage Permissions Denied", Toast.LENGTH_SHORT).show();
                 }
             });
-    private void copyImageToFilesDir(Path imagePath, String pfpPath) {
-        try {
-            Files.copy(imagePath, Paths.get(pfpPath), REPLACE_EXISTING);
+    public void copyImageToFilesDir(Uri imageURI, String destination)
+    {
+        OutputStream outputStream = null;
+        try
+        {
+            InputStream inputStream = requireActivity().getApplicationContext().getContentResolver().openInputStream(imageURI);
+            File file = new File(destination);
+            outputStream = new FileOutputStream(file);
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+            outputStream.close();
         } catch (IOException e) {
             Log.d("IOException:", "During default pfp copy", e);
         } catch (SecurityException e) {
             Log.d("SecurityException:", "During default pfp copy", e);
         }
     }
+
 }
