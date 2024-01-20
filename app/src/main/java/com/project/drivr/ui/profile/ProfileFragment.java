@@ -164,9 +164,11 @@ public class ProfileFragment extends Fragment {
                 cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerCity.setAdapter(cityAdapter);
                 spinnerCity.setSelection(cityAdapter.getPosition(cursor.getString(cursor.getColumnIndexOrThrow("CITY"))));
+                editTextPhoneNumber.setText(cursor.getString(cursor.getColumnIndexOrThrow("PHONE")));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
+                editTextPhoneNumber.setText(cursor.getString(cursor.getColumnIndexOrThrow("PHONE")));
             }
         });
 
@@ -288,7 +290,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-        editTextPhoneNumber.setText(cursor.getString(cursor.getColumnIndexOrThrow("PHONE")));
         return root;
     }
 
