@@ -33,6 +33,7 @@ public class login extends AppCompatActivity {
         EditText password = findViewById(R.id.pass);
         CheckBox checkBoxRememberMe = findViewById(R.id.remember);
         DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(login.this, "registration", null, 1);
+        dataBaseHelper.insertFirstAdmin();
         Button login = findViewById(R.id.login);
         sharedPrefManager = SharedPrefManager.getInstance(this);
         String status = sharedPrefManager.readString("rememberMe", null);
@@ -45,8 +46,16 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(email.getText().toString()) && !TextUtils.isEmpty(password.getText().toString())) {
-                    if (!registration.validateEmailFormat(email.getText().toString())) {
+                    if (!registration.validateEmailFormat(email.getText().toString())&&email.getText().toString().equals("amal@cardealer.com")==false) {
                         Toast.makeText(getApplicationContext(), "Invalid email format", Toast.LENGTH_SHORT).show();
+                    } else if (email.getText().toString().equals("amal@cardealer.com")) {
+                        if (password.getText().toString().equals("Amal12*")) {
+                            sharedPrefManager.writeString("userName",email.getText().toString());
+                            sharedPrefManager.writeString("password",password.getText().toString());
+                            Intent intent = new Intent(login.this, MainActivity_Admin.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     } else {
                         if (dataBaseHelper.isUserWithEmailExists(email.getText().toString())) {
                             String pass = hashPassword(password.getText().toString());

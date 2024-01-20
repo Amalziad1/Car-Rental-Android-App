@@ -32,6 +32,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // onCreate method is called when the database is created for the first time.
     @Override
     public void onCreate(SQLiteDatabase db) {
+        String createTableUAdmin= "CREATE TABLE IF NOT EXISTS Admin(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT, PICTURE_PATH TEXT);";
+        db.execSQL(createTableUAdmin);
         String createTableUser= "CREATE TABLE IF NOT EXISTS User(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, GENDER TEXT, COUNTRY TEXT, CITY TEXT,PASSWORD TEXT, PHONE LONG, PICTURE_PATH TEXT);";
         db.execSQL(createTableUser);
         String createTableCar = "CREATE TABLE IF NOT EXISTS Car(VIN TEXT PRIMARY KEY, FACTORY TEXT, TYPE TEXT, PRICE DOUBLE, MODEL INTEGER, IMG TEXT);";
@@ -45,6 +47,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+    public void insertAdmin(Admin admin) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("EMAIL", admin.getEmail());
+        contentValues.put("FIRSTNAME", admin.getFirstName());
+        contentValues.put("LASTNAME", admin.getLastName());
+        contentValues.put("PASSWORD", admin.getPassword());
+        sqLiteDatabase.insertWithOnConflict("Admin", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        sqLiteDatabase.close();
+    }
+    public void insertFirstAdmin() {
+        //insertion for first admin
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("EMAIL", "amal@cardlear.com");
+        contentValues.put("FIRSTNAME", "amal");
+        contentValues.put("LASTNAME", "ziad");
+        contentValues.put("PASSWORD", "Amal12*");
+        //contentValues.put("PICTURE_PATH", "");
+        sqLiteDatabase.insertWithOnConflict("Admin", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        sqLiteDatabase.close();
     }
 
     public void insertUser(User user) {
@@ -141,6 +165,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] selectionArgs = { email };
         return db.rawQuery("SELECT * FROM User WHERE EMAIL=?", selectionArgs);
+    }
+    public Cursor getAdminByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] selectionArgs = { email };
+        return db.rawQuery("SELECT * FROM Admin WHERE EMAIL=?", selectionArgs);
     }
     public Cursor getReservation(String email){
         SQLiteDatabase db = this.getReadableDatabase();

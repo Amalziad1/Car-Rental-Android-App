@@ -16,6 +16,12 @@
     <string name="menu_offers">Special Offers</string>
     <string name="menu_logout">Sign Out</string>
 
+    <string name="menu_add">Add</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_view">View</string>
+    <string name="menu_feedback">Feedback</string>
+    <string name="menu_signout">Sign Out</string>
+
     <string-array name="gender_array">
         <item>Select Gender</item>
         <item>Male</item>

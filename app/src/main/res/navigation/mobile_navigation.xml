@@ -46,4 +46,5 @@
         android:name="com.project.drivr.ui.find_us.FindUsFragment"
         android:label="@string/menu_find_us"
         tools:layout="@layout/fragment_find_us" />
+
 </navigation>

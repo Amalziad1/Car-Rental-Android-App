@@ -134,11 +134,9 @@ public class registration extends AppCompatActivity {
             }
         });
         signup.setOnClickListener(new View.OnClickListener() {
-            //<<<<<<< HEAD
             @Override
             public void onClick(View view) {
                 hideKeyboard();
-                //Toast.makeText(getApplicationContext(), "============", Toast.LENGTH_SHORT).show();
                 String firstName = fname.getText().toString();
                 String lastName = lname.getText().toString();
                 String Email = email.getText().toString().toLowerCase().replaceAll("\\s", "");
@@ -198,8 +196,6 @@ public class registration extends AppCompatActivity {
                 }
             }
         });
-//=======
-//>>>>>>> 7d885ae8eeebb8e9695da28551e469d3cd12ab41
     }
 
     private String hashPassword(String password) {
