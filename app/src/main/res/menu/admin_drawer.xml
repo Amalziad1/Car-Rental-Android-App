@@ -16,10 +16,6 @@
             android:id="@+id/view_all_reservations"
             android:icon="@drawable/view"
             android:title="@string/menu_view" />
-        <item
-            android:id="@+id/view_feedback"
-            android:icon="@drawable/rate"
-            android:title="@string/menu_feedback" />
 
         <item
             android:id="@+id/log_out"

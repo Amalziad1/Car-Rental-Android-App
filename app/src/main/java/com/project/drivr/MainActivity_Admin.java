@@ -42,7 +42,7 @@ public class MainActivity_Admin extends AppCompatActivity implements UpdateUserI
         navigationView = binding.navView2;
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.add_admin, R.id.delete_customer, R.id.view_all_reservations, R.id.view_feedback, R.id.log_out)
+                R.id.add_admin, R.id.delete_customer, R.id.view_all_reservations, R.id.log_out)
                 .setOpenableLayout(drawer)
                 .build();
 

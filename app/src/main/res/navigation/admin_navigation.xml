@@ -8,24 +8,19 @@
     <fragment
         android:id="@+id/add_admin"
         android:name="com.project.drivr.admin.add_admin"
-        android:label=""
+        android:label="Add Admin"
         tools:layout="@layout/fragment_add_admin"
         />
     <fragment
         android:id="@+id/delete_customer"
         android:name="com.project.drivr.admin.delete_customer"
-        android:label=""
+        android:label="Delete Customer"
         tools:layout="@layout/fragment_delete_customer" />
     <fragment
         android:id="@+id/view_all_reservations"
         android:name="com.project.drivr.admin.view_all_reservations"
-        android:label=""
+        android:label="All Reservations"
         tools:layout="@layout/fragment_view_all_reservations" />
-    <fragment
-        android:id="@+id/view_feedback"
-        android:name="com.project.drivr.admin.view_feedback"
-        android:label=""
-        tools:layout="@layout/fragment_view_feedback" />
     <fragment
         android:id="@+id/log_out"
         android:name="com.project.drivr.Logout"
