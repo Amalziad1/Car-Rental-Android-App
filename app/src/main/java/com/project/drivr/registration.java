@@ -166,7 +166,7 @@ public class registration extends AppCompatActivity {
                     password.setError("Must be at least 5 chars, 1 character, 1 number, and 1 special character");
                     flag++;
                 }
-                if (phoneNumber.length() < 13) {
+                if (phoneNumber.length() < 14) {
                     editTextPhoneNumber.setError("Must be 13 length");
                     flag++;
                 }

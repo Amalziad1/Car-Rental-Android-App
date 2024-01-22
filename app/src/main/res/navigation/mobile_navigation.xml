@@ -49,7 +49,6 @@
     <fragment
         android:id="@+id/nav_log_out"
         android:name="com.project.drivr.Logout"
-        android:label="@string/menu_find_us"
-        tools:layout="@layout/fragment_logout" />
+        android:label="@string/menu_logout"/>
 
 </navigation>

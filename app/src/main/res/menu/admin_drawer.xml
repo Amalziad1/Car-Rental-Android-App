@@ -5,25 +5,26 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_add"
+            android:id="@+id/add_admin"
             android:icon="@drawable/add"
             android:title="@string/menu_add" />
         <item
-            android:id="@+id/nav_delete"
+            android:id="@+id/delete_customer"
             android:icon="@drawable/delete"
             android:title="@string/menu_delete" />
         <item
-            android:id="@+id/nav_view_customers"
+            android:id="@+id/view_all_reservations"
             android:icon="@drawable/view"
             android:title="@string/menu_view" />
         <item
-            android:id="@+id/nav_feedback"
+            android:id="@+id/view_feedback"
             android:icon="@drawable/rate"
             android:title="@string/menu_feedback" />
 
         <item
-            android:id="@+id/nav_log_out_admin"
+            android:id="@+id/log_out"
             android:icon="@drawable/logout"
             android:title="@string/menu_logout" />
+
     </group>
 </menu>

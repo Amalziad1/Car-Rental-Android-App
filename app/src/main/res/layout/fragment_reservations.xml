@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D0E5DC"
+    android:background="@drawable/back3"
     tools:context=".ui.reservations.ReservationsFragment">
 
     <ScrollView
         android:id="@+id/scrollerOffers"
-        android:layout_width="380dp"
-        android:layout_height="700dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:contentDescription=" "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,6 +21,8 @@
             android:id="@+id/root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="100dp"
             android:orientation="vertical"></LinearLayout>
     </ScrollView>
 

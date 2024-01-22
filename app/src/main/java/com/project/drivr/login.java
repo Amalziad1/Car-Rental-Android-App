@@ -41,10 +41,11 @@ public class login extends AppCompatActivity {
         //adding the first admin
         String defaultPFPpath = getApplicationContext().getFilesDir().toString() + "/default_profile_picture.jpg";
         copyPFPToFilesDir(R.raw.default_profile_picture, defaultPFPpath);
-        Admin admin=new Admin("amal","ziad","amal@cardealer.com",hashPassword("Amal12*"),defaultPFPpath);
+        Admin admin=new Admin("Female", "amal", "ziad", "amal@cardealer.com", "palestine", "jerusalem", hashPassword("Amal12*"), "00970123456789", defaultPFPpath);
         dataBaseHelper.insertAdmin(admin);
-        ///continue with the rest
+        //
         Button login = findViewById(R.id.login);
+        //getting email and password if saved
         sharedPrefManager = SharedPrefManager.getInstance(this);
         String status = sharedPrefManager.readString("rememberMe", null);
         if (status != null && status.equals("yes")) {

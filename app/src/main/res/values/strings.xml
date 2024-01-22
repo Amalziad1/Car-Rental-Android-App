@@ -16,10 +16,10 @@
     <string name="menu_offers">Special Offers</string>
     <string name="menu_logout">Sign Out</string>
 
-    <string name="menu_add">Add</string>
-    <string name="menu_delete">Delete</string>
-    <string name="menu_view">View</string>
-    <string name="menu_feedback">Feedback</string>
+    <string name="menu_add">Add Admin</string>
+    <string name="menu_delete">Delete Customer</string>
+    <string name="menu_view">View All Reservations</string>
+    <string name="menu_feedback">View Feedback</string>
     <string name="menu_signout">Sign Out</string>
 
     <string-array name="gender_array">

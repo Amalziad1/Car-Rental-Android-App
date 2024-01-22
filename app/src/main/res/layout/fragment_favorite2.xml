@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearlayout"
-    android:layout_width="380dp"
+    android:layout_width="match_parent"
     android:layout_height="250dp"
     android:orientation="vertical"
     tools:context=".ui.favorites.FavoriteFragment2">
@@ -13,7 +13,10 @@
         android:id="@+id/favCons"
         android:layout_width="380dp"
         android:layout_height="230dp"
-        android:background="@drawable/rounded_fragment_layout">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_fragment_layout2">
 
         <Button
             android:id="@+id/button2"
@@ -21,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="52dp"
             android:layout_marginEnd="32dp"
-            android:backgroundTint="#79A39F"
+            android:backgroundTint="#3E6D67"
             android:drawableLeft="@drawable/calendar_month"
             android:text="Reserve"
             android:textSize="18sp"
@@ -34,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="28dp"
-            android:backgroundTint="#79A39F"
+            android:backgroundTint="#3E6D67"
             android:drawableLeft="@drawable/favorite"
             android:text="Remove"
             android:textSize="18sp"

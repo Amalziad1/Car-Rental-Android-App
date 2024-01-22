@@ -45,7 +45,6 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI {
-    //implements NavigationView.OnNavigationItemSelectedListener
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private SharedPrefManager sharedPrefManager;
@@ -153,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI 
                 .setAutoCancel(true) //dismiss the notification when the user taps it
                 .setColor(Color.GREEN);
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.notify(/* notification_id */ 1, builder.build());
+        notificationManager.notify(1, builder.build());
     }
 
     private void createNotificationChannel() {

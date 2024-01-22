@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -92,15 +94,29 @@ public class FavoriteFragment2 extends Fragment {
         favCons.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), viewCarDetails.class);
-                intent.putExtra("factory", factory);
-                intent.putExtra("type", type);
-                intent.putExtra("model", model);
-                intent.putExtra("price", price);
-                intent.putExtra("img", img);
-                intent.putExtra("email", email);
-                intent.putExtra("VIN", VIN);
-                startActivity(intent);
+                Animation scaleAnimation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.scale);
+                scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        //animation ended, start the new activity
+                        Intent intent = new Intent(getActivity().getApplicationContext(), viewCarDetails.class);
+                        intent.putExtra("factory", factory);
+                        intent.putExtra("type", type);
+                        intent.putExtra("model", model);
+                        intent.putExtra("price", price);
+                        intent.putExtra("img", img);
+                        intent.putExtra("email", email);
+                        intent.putExtra("VIN", VIN);
+                        startActivity(intent);
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
+                favCons.startAnimation(scaleAnimation);
             }
         });
         reserve.setOnClickListener(new View.OnClickListener() {

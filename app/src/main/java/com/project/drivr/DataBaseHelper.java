@@ -37,7 +37,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // onCreate method is called when the database is created for the first time.
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableUAdmin = "CREATE TABLE IF NOT EXISTS Admin(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT, PICTURE_PATH TEXT);";
+        String createTableUAdmin = "CREATE TABLE IF NOT EXISTS Admin(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, GENDER TEXT, COUNTRY TEXT, CITY TEXT,PASSWORD TEXT, PHONE LONG, PICTURE_PATH TEXT);";
         db.execSQL(createTableUAdmin);
         String createTableUser = "CREATE TABLE IF NOT EXISTS User(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, GENDER TEXT, COUNTRY TEXT, CITY TEXT,PASSWORD TEXT, PHONE LONG, PICTURE_PATH TEXT);";
         db.execSQL(createTableUser);
@@ -66,7 +66,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("EMAIL", admin.getEmail());
         contentValues.put("FIRSTNAME", admin.getFirstName());
         contentValues.put("LASTNAME", admin.getLastName());
+        contentValues.put("GENDER", admin.getGender());
+        contentValues.put("COUNTRY", admin.getCountry());
+        contentValues.put("CITY", admin.getCity());
         contentValues.put("PASSWORD", admin.getPassword());
+        contentValues.put("PHONE", admin.getPhoneNumber());
         contentValues.put("PICTURE_PATH", admin.getPicturePath());
         sqLiteDatabase.insertWithOnConflict("Admin", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         sqLiteDatabase.close();

@@ -12,7 +12,7 @@
         android:id="@+id/fname"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="88dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:hint="First Name"
@@ -138,7 +138,7 @@
         android:layout_width="270dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#79A39F"
+        android:backgroundTint="#315450"
         android:text="Sign up"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -156,6 +156,7 @@
         app:layout_constraintEnd_toEndOf="@+id/password"
         app:layout_constraintHorizontal_bias="0.995"
         app:layout_constraintStart_toStartOf="@+id/password"
+        android:buttonTint="@color/white"
         app:layout_constraintTop_toTopOf="@+id/password" />
 
     <CheckBox
@@ -166,6 +167,7 @@
         app:layout_constraintEnd_toEndOf="@+id/confirmPassword"
         app:layout_constraintHorizontal_bias="0.995"
         app:layout_constraintStart_toStartOf="@+id/confirmPassword"
+        android:buttonTint="@color/white"
         app:layout_constraintTop_toTopOf="@+id/confirmPassword"
         app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

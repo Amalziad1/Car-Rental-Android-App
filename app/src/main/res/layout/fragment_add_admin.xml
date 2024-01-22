@@ -5,14 +5,14 @@
     android:id="@+id/addAdminRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back2"
+    android:background="@drawable/back3"
     tools:context=".admin.add_admin">
 
     <EditText
         android:id="@+id/fnameAdmin"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="84dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:hint="First Name"
@@ -28,7 +28,7 @@
         android:id="@+id/lnameAdmin"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:hint="Last Name"
@@ -44,7 +44,7 @@
         android:id="@+id/adminEmail"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:hint="Email"
@@ -60,7 +60,7 @@
         android:id="@+id/passwordAdmin"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:hint="Password"
@@ -78,13 +78,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/passwordAdmin"
         app:layout_constraintEnd_toEndOf="@+id/passwordAdmin"
+        android:buttonTint="@color/white"
         app:layout_constraintTop_toTopOf="@+id/passwordAdmin" />
 
     <EditText
         android:id="@+id/confirmPassAdmin"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
         android:hint="Confirm Password"
@@ -102,20 +103,74 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/confirmPassAdmin"
         app:layout_constraintEnd_toEndOf="@+id/confirmPassAdmin"
+        android:buttonTint="@color/white"
         app:layout_constraintTop_toTopOf="@+id/confirmPassAdmin" />
 
     <Button
         android:id="@+id/add"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#79A39F"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#315450"
         android:text="Add Admin"
         android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gender2" />
+
+    <Spinner
+        android:id="@+id/gender2"
+        android:layout_width="270dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_edittext"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone2" />
+
+    <Spinner
+        android:id="@+id/country2"
+        android:layout_width="270dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_edittext"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmPassAdmin" />
+
+    <Spinner
+        android:id="@+id/city2"
+        android:layout_width="270dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_edittext"
+        android:contentDescription=" "
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/country2" />
+
+    <EditText
+        android:id="@+id/phone2"
+        android:layout_width="270dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_edittext"
+        android:ems="10"
+        android:hint="Phone Number"
+        android:inputType="number"
+        android:padding="10dp"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/city2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

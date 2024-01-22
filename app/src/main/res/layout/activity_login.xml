@@ -44,7 +44,7 @@
         android:layout_width="270dp"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#79A39F"
+        android:backgroundTint="#315450"
         android:text="Log in"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -82,9 +82,7 @@ public class CarMenu extends Fragment {
         name.setText(factory + " : " + type);
         ImageView imageview = view.findViewById(R.id.photoImageView);
         Picasso.get().load(img).into(imageview);
-        ObjectAnimator rotateAnimator = (ObjectAnimator) AnimatorInflater.loadAnimator(getActivity().getApplicationContext(), R.animator.rotation_3d);
-        rotateAnimator.setTarget(imageview);
-        rotateAnimator.start();
+
         ConstraintLayout constraintLayout = view.findViewById(R.id.carDetailsConstraint);
         constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,11 +91,10 @@ public class CarMenu extends Fragment {
                 scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        // Animation started
                     }
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        // Animation ended, start the new activity
+                        //animation ended, start the new activity
                         Intent intent = new Intent(getActivity().getApplicationContext(), viewCarDetails.class);
                         intent.putExtra("factory", factory);
                         intent.putExtra("type", type);
@@ -110,11 +107,8 @@ public class CarMenu extends Fragment {
                     }
                     @Override
                     public void onAnimationRepeat(Animation animation) {
-                        // Animation repeated
                     }
                 });
-
-                // Start the animation
                 constraintLayout.startAnimation(scaleAnimation);
             }
         });
@@ -133,7 +127,6 @@ public class CarMenu extends Fragment {
         addRes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                dataBaseHelper.insertReservation(reserve);
                 PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, price, img, email, VIN);
                 popUpReservation.show(getChildFragmentManager(), "popup_fragment");
             }
