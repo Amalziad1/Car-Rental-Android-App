@@ -2,9 +2,6 @@ package com.project.drivr.ui.favorites;
 import android.content.Intent;
 import android.os.Bundle;
 
-import java.sql.Time;
-import java.util.Date;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +19,6 @@ import com.project.drivr.R;
 
 import com.project.drivr.ui.car_menu.PopUpReservation;
 import com.project.drivr.ui.car_menu.viewCarDetails;
-import com.project.drivr.ui.reservations.Reservation;
 import com.squareup.picasso.Picasso;
 
 
@@ -71,8 +67,8 @@ public class FavoriteFragment2 extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite2, container, false);
 
-        TextView name=view.findViewById(R.id.textView3);
-        ImageView imageview=view.findViewById(R.id.imageView2);
+        TextView name=view.findViewById(R.id.carNameView);
+        ImageView imageview=view.findViewById(R.id.cImage);
         name.setText(factory + " : "+type);
         Picasso.get().load(img).into(imageview);//to display images
         Button unFav=view.findViewById(R.id.button3);
@@ -110,15 +106,6 @@ public class FavoriteFragment2 extends Fragment {
         reserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Reservation obj=new Reservation();
-//                long currentTimeMillis = System.currentTimeMillis();
-//                Date currentDate = new Date(currentTimeMillis);
-//                Time currentTime = new Time(currentDate.getTime());
-//                obj.setDate(currentDate);
-//                obj.setTime(currentTime);
-//                obj.setEmail(email);
-//                obj.setVIN(VIN);
-//                dataBaseHelper.insertReservation(obj);
                 PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, price, img, email, VIN);
                 popUpReservation.show(getChildFragmentManager(), "popup_fragment");
             }

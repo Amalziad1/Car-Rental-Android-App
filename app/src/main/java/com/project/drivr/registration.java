@@ -231,7 +231,7 @@ public class registration extends AppCompatActivity {
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
-            String[] allowedDomains = {"gmail.com", "outlook.com", "hotmail.com", "yahoo.com", "icloud.com"};
+            String[] allowedDomains = {"gmail.com", "outlook.com", "hotmail.com", "yahoo.com", "icloud.com","cardealer.com"};
             String[] emailParts = email.split("@");
             if (emailParts.length == 2) {
                 String domain = emailParts[1].toLowerCase();

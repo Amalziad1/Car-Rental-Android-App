@@ -153,7 +153,7 @@ public class CarMenu extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Removed from your Favorites", Toast.LENGTH_SHORT).show();
                     exist = false;
                 } else {
-                    dataBaseHelper.insertFavorite(email, VIN);
+                    dataBaseHelper.insertFavorite(email, VIN,currentDate,currentTime);
                     addFav.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite_filled, 0, 0, 0);
                     Toast.makeText(getActivity().getApplicationContext(), "Added to your Favorites", Toast.LENGTH_SHORT).show();
                     exist = true;

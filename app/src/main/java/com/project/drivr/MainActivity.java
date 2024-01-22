@@ -1,10 +1,18 @@
 package com.project.drivr;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,14 +41,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI{
-//implements NavigationView.OnNavigationItemSelectedListener
+public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI {
+    //implements NavigationView.OnNavigationItemSelectedListener
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private SharedPrefManager sharedPrefManager;
     private DataBaseHelper dataBaseHelper;
     private NavigationView navigationView;
+    //for checking if there's new special offer
+    private int year = 2024;
+    private int month = 1;
+    private int day = 15;
+
     @Override
     public void updateUserInfoUI(User user) {
         TextView nameTextView = navigationView.getHeaderView(0).findViewById(R.id.userNameTextView);
@@ -52,11 +67,11 @@ public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI{
         if (file.isFile()) {
             Picasso.get().load(file).into(profilePictureView);
             Log.e("UI:", "Navigation drawer UI user info updated");
-        }
-        else {
+        } else {
             Log.e("PFP:", "Bitmap does not exist.");
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +82,20 @@ public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI{
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
         navigationView = binding.navView;
+
+        sharedPrefManager = SharedPrefManager.getInstance(this);
+        //notifications
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        String strMonth = sharedPrefManager.readString("month", null);
+        if (strMonth != null) {
+            this.month = Integer.parseInt(strMonth);
+        }
+        LocalDateTime endDate = LocalDateTime.of(year, month, day, 0, 0);
+        if (currentDateTime.isAfter(endDate)) {
+            this.month = this.month + 1;
+            sharedPrefManager.writeString("month", String.valueOf(this.month));
+            notification();//notify when the new notification is released
+        }
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -78,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI{
         NavigationUI.setupWithNavController(navigationView, navController);
 
         // Fetch data
-        sharedPrefManager = SharedPrefManager.getInstance(this);
         String userName = sharedPrefManager.readString("userName", null);
         dataBaseHelper = DataBaseHelper.getInstance(this, "registration", null, 1);
         Cursor cursor = dataBaseHelper.getUserByEmail(userName);
@@ -97,18 +125,10 @@ public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI{
         if (file.isFile()) {
             Picasso.get().load(file).into(profilePictureView);
             Log.e("UI:", "Navigation drawer UI user info updated");
-        }
-        else {
+        } else {
             Log.e("PFP:", "Bitmap does not exist.");
         }
     }
-
-//    private void logoutUser() {
-//        Intent intent = new Intent(MainActivity.this, login.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-//        finish();
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -124,15 +144,26 @@ public class MainActivity extends AppCompatActivity implements UpdateUserInfoUI{
                 || super.onSupportNavigateUp();
     }
 
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.nav_log_out) {
-//            logoutUser();
-//            return true;
-//        }
-//        DrawerLayout drawer = binding.drawerLayout;
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
+    public void notification() {
+        createNotificationChannel();
+        Notification.Builder builder = new Notification.Builder(this, "1")
+                .setSmallIcon(R.drawable.directions_car)
+                .setContentTitle("New special offer released")
+                .setContentText("Come check it now!")
+                .setAutoCancel(true) //dismiss the notification when the user taps it
+                .setColor(Color.GREEN);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.notify(/* notification_id */ 1, builder.build());
+    }
+
+    private void createNotificationChannel() {
+        String channelId = "1";
+        CharSequence channelName = "Channel";
+        String channelDescription = "Notifying users when new offer is released";
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setDescription(channelDescription);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+    }
+
 }

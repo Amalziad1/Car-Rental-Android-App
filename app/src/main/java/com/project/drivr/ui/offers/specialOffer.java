@@ -19,6 +19,9 @@ import com.project.drivr.ui.car_menu.CarMenu;
 import com.project.drivr.ui.car_menu.PopUpReservation;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Time;
+import java.util.Date;
+
 public class specialOffer extends Fragment {
 
     private String VIN;
@@ -108,7 +111,10 @@ public class specialOffer extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Removed from your Favorites", Toast.LENGTH_SHORT).show();
                     exist = false;
                 } else {
-                    dataBaseHelper.insertFavorite(email, VIN);
+                    long currentTimeMillis = System.currentTimeMillis();
+                    Date currentDate = new Date(currentTimeMillis);
+                    Time currentTime = new Time(currentDate.getTime());
+                    dataBaseHelper.insertFavorite(email, VIN,currentDate,currentTime);
                     fav.setCompoundDrawablesWithIntrinsicBounds(R.drawable.favorite_filled, 0, 0, 0);
                     //Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.scale);
 

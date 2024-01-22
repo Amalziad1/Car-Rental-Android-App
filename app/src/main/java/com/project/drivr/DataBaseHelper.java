@@ -1,4 +1,5 @@
 package com.project.drivr;
+
 import com.project.drivr.ui.reservations.ReservationsFragment;
 
 import android.content.ContentValues;
@@ -11,13 +12,16 @@ import android.util.Log;
 import com.project.drivr.ui.car_menu.Car;
 import com.project.drivr.ui.reservations.Reservation;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static DataBaseHelper instance = null;
+
     public static DataBaseHelper getInstance(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         if (instance != null) {
             return instance;
@@ -25,6 +29,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         instance = new DataBaseHelper(context, name, factory, version);
         return instance;
     }
+
     private DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -32,15 +37,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // onCreate method is called when the database is created for the first time.
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableUAdmin= "CREATE TABLE IF NOT EXISTS Admin(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT, PICTURE_PATH TEXT);";
+        String createTableUAdmin = "CREATE TABLE IF NOT EXISTS Admin(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, PASSWORD TEXT, PICTURE_PATH TEXT);";
         db.execSQL(createTableUAdmin);
-        String createTableUser= "CREATE TABLE IF NOT EXISTS User(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, GENDER TEXT, COUNTRY TEXT, CITY TEXT,PASSWORD TEXT, PHONE LONG, PICTURE_PATH TEXT);";
+        String createTableUser = "CREATE TABLE IF NOT EXISTS User(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, GENDER TEXT, COUNTRY TEXT, CITY TEXT,PASSWORD TEXT, PHONE LONG, PICTURE_PATH TEXT);";
         db.execSQL(createTableUser);
         String createTableCar = "CREATE TABLE IF NOT EXISTS Car(VIN TEXT PRIMARY KEY, FACTORY TEXT, TYPE TEXT, PRICE DOUBLE, MODEL INTEGER, IMG TEXT);";
         db.execSQL(createTableCar);
         String createTableReservation = "CREATE TABLE IF NOT EXISTS Reserve(ID INTEGER PRIMARY KEY AUTOINCREMENT, DATE_RESERVED DATE, TIME_RESERVED TIME, VIN TEXT, EMAIL TEXT, FOREIGN KEY(VIN) REFERENCES Car(VIN),FOREIGN KEY(EMAIL) REFERENCES User(EMAIL) );";
         db.execSQL(createTableReservation);
-        String createTableFavorites = "CREATE TABLE IF NOT EXISTS Favorite( TIMED TIME,VIN TEXT, EMAIL TEXT, FOREIGN KEY(VIN) REFERENCES Car(VIN),FOREIGN KEY(EMAIL) REFERENCES User(EMAIL),PRIMARY KEY (VIN, EMAIL));";
+        String createTableFavorites = "CREATE TABLE IF NOT EXISTS Favorite (TIMED TIME,DATED DATE, VIN TEXT, EMAIL TEXT, FOREIGN KEY(VIN) REFERENCES Car(VIN), FOREIGN KEY(EMAIL) REFERENCES User(EMAIL),PRIMARY KEY(EMAIL,VIN));";
         db.execSQL(createTableFavorites);
     }
 
@@ -48,6 +53,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+    public Cursor getAllReservations() {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String[] projection = {"DATE_RESERVED", "TIME_RESERVED", "VIN","EMAIL"};
+        Cursor cursor = sqLiteDatabase.query("Reserve", projection, null, null, null, null, null);
+        return cursor;
+    }
+
     public void insertAdmin(Admin admin) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -55,20 +67,47 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("FIRSTNAME", admin.getFirstName());
         contentValues.put("LASTNAME", admin.getLastName());
         contentValues.put("PASSWORD", admin.getPassword());
+        contentValues.put("PICTURE_PATH", admin.getPicturePath());
         sqLiteDatabase.insertWithOnConflict("Admin", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         sqLiteDatabase.close();
     }
-    public void insertFirstAdmin() {
-        //insertion for first admin
+    public boolean deleteUserByEmail(String userEmail) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("EMAIL", "amal@cardlear.com");
-        contentValues.put("FIRSTNAME", "amal");
-        contentValues.put("LASTNAME", "ziad");
-        contentValues.put("PASSWORD", "Amal12*");
-        //contentValues.put("PICTURE_PATH", "");
-        sqLiteDatabase.insertWithOnConflict("Admin", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        String selection = "EMAIL=?";
+        String[] selectionArgs = {userEmail};
+        int deletedRows = sqLiteDatabase.delete("User", selection, selectionArgs);
+        boolean isSuccessful = deletedRows > 0;
         sqLiteDatabase.close();
+        return isSuccessful;
+    }
+    public Cursor getUserByNames(String firstName, String lastName) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String[] projection = {"EMAIL", "FIRSTNAME", "LASTNAME"};
+        String selection = "FIRSTNAME=? AND LASTNAME=?";
+        String[] selectionArgs = {firstName, lastName};
+        Cursor cursor = sqLiteDatabase.query("User", projection, selection, selectionArgs, null, null, null);
+        return cursor;
+    }
+    public boolean isAdminWithEmailExists(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {"EMAIL"};
+        String selection = "EMAIL" + " = ?";
+        String[] selectionArgs = {email};
+        Cursor cursor = db.query(
+                "Admin",
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        boolean userExists = cursor != null && cursor.getCount() > 0;
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return userExists;
     }
 
     public void insertUser(User user) {
@@ -86,6 +125,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.insert("User", null, contentValues);
         sqLiteDatabase.close();
     }
+
     public void updateUser(User user) {
 
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
@@ -99,9 +139,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("PASSWORD", user.getPassword());
         contentValues.put("PHONE", user.getPhoneNumber());
         contentValues.put("PICTURE_PATH", user.getPicturePath());
-        String[]  whereArgs = {user.getEmail()};
+        String[] whereArgs = {user.getEmail()};
         sqLiteDatabase.update("User", contentValues, "EMAIL = ?", whereArgs);
     }
+
     public void insertCar(Car car) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -128,18 +169,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.insert("Reserve", null, values);
         db.close();
     }
-    public void insertFavorite(String email,String VIN) {
+
+    public void insertFavorite(String email, String VIN, Date date, Time time) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        contentValues.put("DATED", dateFormat.format(date));
+        contentValues.put("TIMED", timeFormat.format(time));
         contentValues.put("EMAIL", email);
         contentValues.put("VIN", VIN);
         sqLiteDatabase.insert("Favorite", null, contentValues);
         sqLiteDatabase.close();
     }
+
     public Cursor getAllUsers() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM User", null);
     }
+
     public boolean isUserWithEmailExists(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] projection = {"EMAIL"};
@@ -161,31 +209,37 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
         return userExists;
     }
+
     public Cursor getUserByEmail(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] selectionArgs = { email };
+        String[] selectionArgs = {email};
         return db.rawQuery("SELECT * FROM User WHERE EMAIL=?", selectionArgs);
     }
+
     public Cursor getAdminByEmail(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] selectionArgs = { email };
+        String[] selectionArgs = {email};
         return db.rawQuery("SELECT * FROM Admin WHERE EMAIL=?", selectionArgs);
     }
-    public Cursor getReservation(String email){
+
+    public Cursor getReservation(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] selectionArgs = { email };
+        String[] selectionArgs = {email};
         return db.rawQuery("SELECT * FROM Reserve WHERE EMAIL=?", selectionArgs);
     }
-    public Cursor getFavorites(String email){
+
+    public Cursor getFavorites(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] selectionArgs = { email };
+        String[] selectionArgs = {email};
         return db.rawQuery("SELECT * FROM Favorite WHERE EMAIL=?", selectionArgs);
     }
-    public Cursor getCar(String VIN){
+
+    public Cursor getCar(String VIN) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] selectionArgs = { VIN };
+        String[] selectionArgs = {VIN};
         return db.rawQuery("SELECT * FROM Car WHERE VIN=?", selectionArgs);
     }
+
     public Cursor getAllCars() {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] projection = {
@@ -198,6 +252,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         };
         return db.query("Car", projection, null, null, null, null, null);
     }
+
     public int removeFavorite(String VIN, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
         String tableName = "Favorite";
@@ -211,22 +266,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return -1;
         }
     }
+
     public Cursor getLatestReservation(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM Reserve WHERE EMAIL = ? ORDER BY DATE_RESERVED,TIME_RESERVED DESC LIMIT 1",
+                "SELECT * FROM Reserve WHERE EMAIL = ? ORDER BY DATE_RESERVED,TIME_RESERVED ASC LIMIT 1",
                 new String[]{email}
         );
         return cursor;
     }
+
     public Cursor getLatestFavorite(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM Favorite WHERE EMAIL = ? ORDER BY TIMED DESC LIMIT 1",
+                "SELECT * FROM Favorite WHERE EMAIL = ? ORDER BY TIMED,DATED DESC LIMIT 1",
                 new String[]{email}
         );
         return cursor;
     }
+
     public boolean isFavoriteExist(String email, String VIN) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM Favorite WHERE EMAIL=? AND VIN=?", new String[]{email, VIN});
@@ -234,6 +292,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return exists;
     }
+
     public Cursor getRandomCarCursor() {
         SQLiteDatabase db = getReadableDatabase();
         String countQuery = "SELECT COUNT(*) FROM Car";

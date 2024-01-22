@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,7 +18,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -33,7 +38,12 @@ public class login extends AppCompatActivity {
         EditText password = findViewById(R.id.pass);
         CheckBox checkBoxRememberMe = findViewById(R.id.remember);
         DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(login.this, "registration", null, 1);
-        dataBaseHelper.insertFirstAdmin();
+        //adding the first admin
+        String defaultPFPpath = getApplicationContext().getFilesDir().toString() + "/default_profile_picture.jpg";
+        copyPFPToFilesDir(R.raw.default_profile_picture, defaultPFPpath);
+        Admin admin=new Admin("amal","ziad","amal@cardealer.com",hashPassword("Amal12*"),defaultPFPpath);
+        dataBaseHelper.insertAdmin(admin);
+        ///continue with the rest
         Button login = findViewById(R.id.login);
         sharedPrefManager = SharedPrefManager.getInstance(this);
         String status = sharedPrefManager.readString("rememberMe", null);
@@ -46,18 +56,10 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(email.getText().toString()) && !TextUtils.isEmpty(password.getText().toString())) {
-                    if (!registration.validateEmailFormat(email.getText().toString())&&email.getText().toString().equals("amal@cardealer.com")==false) {
+                    if (!registration.validateEmailFormat(email.getText().toString())) {
                         Toast.makeText(getApplicationContext(), "Invalid email format", Toast.LENGTH_SHORT).show();
-                    } else if (email.getText().toString().equals("amal@cardealer.com")) {
-                        if (password.getText().toString().equals("Amal12*")) {
-                            sharedPrefManager.writeString("userName",email.getText().toString());
-                            sharedPrefManager.writeString("password",password.getText().toString());
-                            Intent intent = new Intent(login.this, MainActivity_Admin.class);
-                            startActivity(intent);
-                            finish();
-                        }
                     } else {
-                        if (dataBaseHelper.isUserWithEmailExists(email.getText().toString())) {
+                        if (dataBaseHelper.isUserWithEmailExists(email.getText().toString().toLowerCase())) {
                             String pass = hashPassword(password.getText().toString());
                             Cursor auth = dataBaseHelper.getUserByEmail(email.getText().toString());
                             if (auth != null && auth.moveToLast()) {
@@ -81,8 +83,32 @@ public class login extends AppCompatActivity {
                             if (auth != null) {
                                 auth.close();
                             }
-                        } else {
-                            Toast.makeText(login.this, "User with this email does not exist", Toast.LENGTH_SHORT).show();
+                        } else if(dataBaseHelper.isAdminWithEmailExists(email.getText().toString().toLowerCase())){
+                            String pass = hashPassword(password.getText().toString());
+                            Cursor auth = dataBaseHelper.getAdminByEmail(email.getText().toString().toLowerCase());
+                            if (auth != null && auth.moveToLast()) {
+                                @SuppressLint("Range") String passValue = auth.getString(auth.getColumnIndexOrThrow("PASSWORD"));
+                                if (passValue.equals(pass)) {
+                                    sharedPrefManager.writeString("userName", email.getText().toString().toLowerCase().replaceAll("\\s", ""));
+                                    sharedPrefManager.writeString("password", password.getText().toString());
+                                    Toast.makeText(getApplicationContext(), "Welcome ", Toast.LENGTH_SHORT).show();
+                                    if (checkBoxRememberMe.isChecked()) {
+                                        sharedPrefManager.writeString("rememberMe", "yes");
+                                    } else {
+                                        sharedPrefManager.writeString("rememberMe", "no");
+                                    }
+                                    Intent intent = new Intent(login.this, MainActivity_Admin.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(login.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            if (auth != null) {
+                                auth.close();
+                            }
+                        }else {
+                            Toast.makeText(login.this, "Admin with this email does not exist", Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
@@ -102,8 +128,18 @@ public class login extends AppCompatActivity {
             }
         });
     }
+    private void copyPFPToFilesDir(int resourceID, String defaultPFPpath) {
+        InputStream defaultPFP = getResources().openRawResource(resourceID);
+        try {
+            Files.copy(defaultPFP, Paths.get(defaultPFPpath));
+        } catch (IOException e) {
+            Log.d("IOException:", "During default pfp copy", e);
+        } catch (SecurityException e) {
+            Log.d("SecurityException:", "During default pfp copy", e);
+        }
+    }
 
-    private String hashPassword(String password) {
+    public static String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hashedBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));

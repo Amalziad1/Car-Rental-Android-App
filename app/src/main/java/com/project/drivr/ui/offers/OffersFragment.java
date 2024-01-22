@@ -1,7 +1,14 @@
 package com.project.drivr.ui.offers;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +38,7 @@ public class OffersFragment extends Fragment {
     private int day=15;
     private double ratio=0.3;//30% discount
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         OffersViewModel reservationsViewModel =
@@ -38,6 +46,7 @@ public class OffersFragment extends Fragment {
 
         binding = FragmentOffersBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+//
         //
         sharedPrefManager= SharedPrefManager.getInstance(getActivity().getApplicationContext());
         String userEmail=sharedPrefManager.readString("userName","noValue");
@@ -54,9 +63,11 @@ public class OffersFragment extends Fragment {
         //checking if the current date and time are before the specified end date and time
         if (currentDateTime.isAfter(endDate)) {
             //changing the month
-            sharedPrefManager.writeString("month",String.valueOf(this.month +1));
+            this.month=this.month+1;
+            sharedPrefManager.writeString("month",String.valueOf(this.month));
             removeAllFragments(R.id.offersLayout);//removing all the fragment in the layout
             Cursor randomCar= dataBaseHelper.getRandomCarCursor();
+            endDate=LocalDateTime.of(year,month,day,0,0);
             try{
                 if (randomCar != null && randomCar.getCount() > 0) {
                     while (randomCar.moveToNext()) {
@@ -72,6 +83,7 @@ public class OffersFragment extends Fragment {
                                 .commit();
                         //using shared preference to save data for later
                         sharedPrefManager.writeString("VIN",VIN);
+
                     }
                 } else {
                     //Toast.makeText(getActivity().getApplicationContext(), "No reservations have been made yet!", Toast.LENGTH_LONG).show();
@@ -122,6 +134,7 @@ public class OffersFragment extends Fragment {
         // Commit the transaction to remove the fragments
         fragmentTransaction.commit();
     }
+
 
     @Override
     public void onDestroyView() {
