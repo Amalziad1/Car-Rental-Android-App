@@ -41,7 +41,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTableUAdmin);
         String createTableUser = "CREATE TABLE IF NOT EXISTS User(EMAIL TEXT PRIMARY KEY, FIRSTNAME TEXT, LASTNAME TEXT, GENDER TEXT, COUNTRY TEXT, CITY TEXT,PASSWORD TEXT, PHONE LONG, PICTURE_PATH TEXT);";
         db.execSQL(createTableUser);
-        String createTableCar = "CREATE TABLE IF NOT EXISTS Car(VIN TEXT PRIMARY KEY, FACTORY TEXT, TYPE TEXT, PRICE DOUBLE, MODEL INTEGER, IMG TEXT);";
+        String createTableCar = "CREATE TABLE IF NOT EXISTS Car(VIN TEXT PRIMARY KEY, FACTORY TEXT, TYPE TEXT, PRICE DOUBLE, MODEL TEXT, YEAR INTEGER, FUEL TEXT, TRANSMISSION TEXT, MILEAGE DOUBLE, IMG TEXT);";
         db.execSQL(createTableCar);
         String createTableReservation = "CREATE TABLE IF NOT EXISTS Reserve(ID INTEGER PRIMARY KEY AUTOINCREMENT, DATE_RESERVED DATE, TIME_RESERVED TIME, VIN TEXT, EMAIL TEXT, FOREIGN KEY(VIN) REFERENCES Car(VIN),FOREIGN KEY(EMAIL) REFERENCES User(EMAIL) );";
         db.execSQL(createTableReservation);
@@ -155,6 +155,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("TYPE", car.getType());
         contentValues.put("PRICE", car.getPrice());
         contentValues.put("MODEL", car.getModel());
+        contentValues.put("YEAR", car.getYear());
+        contentValues.put("FUEL", car.getFuel());
+        contentValues.put("TRANSMISSION", car.getTransmission());
+        contentValues.put("MILEAGE", car.getMileage());
         contentValues.put("IMG", car.getImgURL());
         long rowId = sqLiteDatabase.insertWithOnConflict("Car", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         sqLiteDatabase.close();
@@ -251,10 +255,32 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "TYPE",
                 "VIN",
                 "MODEL",
+                "YEAR",
+                "TRANSMISSION",
+                "FUEL",
+                "MILEAGE",
                 "PRICE",
                 "IMG"
         };
         return db.query("Car", projection, null, null, null, null, null);
+    }
+
+    public Cursor getCarsFiltered(String filterType, String filterValue) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {
+                "FACTORY",
+                "TYPE",
+                "VIN",
+                "MODEL",
+                "YEAR",
+                "TRANSMISSION",
+                "FUEL",
+                "MILEAGE",
+                "PRICE",
+                "IMG"
+        };
+        String havingClause = filterType.toUpperCase() + " LIKE '%" + filterValue + "%'";
+        return db.query("Car", projection, null, null, "MODEL", havingClause, null);
     }
 
     public int removeFavorite(String VIN, String email) {

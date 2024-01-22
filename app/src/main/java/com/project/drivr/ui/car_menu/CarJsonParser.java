@@ -19,7 +19,11 @@ public class CarJsonParser {
                 Car car = new Car();
                 car.setVIN(jsonObject.getString("VIN"));
                 car.setFactory(jsonObject.getString("car_factory"));
-                car.setModel(jsonObject.getInt("model"));
+                car.setModel(jsonObject.getString("model"));
+                car.setYear(jsonObject.getInt("year"));
+                car.setTransmission(jsonObject.getString("transmission"));
+                car.setFuel(jsonObject.getString("fuel"));
+                car.setMileage(jsonObject.getDouble("mileage"));
                 car.setType(jsonObject.getString("car_type"));
                 car.setPrice(jsonObject.getDouble("price"));
                 car.setImgURL(jsonObject.getString("image"));

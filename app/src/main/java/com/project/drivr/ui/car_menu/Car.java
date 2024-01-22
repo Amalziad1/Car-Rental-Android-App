@@ -4,17 +4,25 @@ public class Car {
     private String VIN;//primary key
     private String factory;
     private String type;
-    private int model;
+    private String model;
+    private int year;
+    private String transmission;
+    private double mileage;
+    private String fuel;
     private double price;
     private String imgURL;
     public Car(){
 
     }
-    public Car(String VIN, String factory, String type, int model, double price, String imgURL) {
+    public Car(String VIN, String factory, String type, String model, int year, String transmission, double mileage, String fuel, double price, String imgURL) {
         this.VIN = VIN;
         this.factory = factory;
         this.type = type;
         this.model = model;
+        this.year = year;
+        this.transmission = transmission;
+        this.mileage = mileage;
+        this.fuel = fuel;
         this.price = price;
         this.imgURL=imgURL;
     }
@@ -37,7 +45,7 @@ public class Car {
         this.type = type;
     }
 
-    public void setModel(int model) {
+    public void setModel(String model) {
         this.model = model;
     }
 
@@ -57,7 +65,7 @@ public class Car {
         return type;
     }
 
-    public int getModel() {
+    public String getModel() {
         return model;
     }
 
@@ -66,5 +74,35 @@ public class Car {
     }
 
 
+    public int getYear() {
+        return year;
+    }
 
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(String trasmission) {
+        this.transmission = trasmission;
+    }
+
+    public double getMileage() {
+        return mileage;
+    }
+
+    public void setMileage(double mileage) {
+        this.mileage = mileage;
+    }
+
+    public String getFuel() {
+        return fuel;
+    }
+
+    public void setFuel(String fuel) {
+        this.fuel = fuel;
+    }
 }

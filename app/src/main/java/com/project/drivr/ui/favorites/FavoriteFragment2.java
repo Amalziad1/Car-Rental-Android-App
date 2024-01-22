@@ -29,7 +29,11 @@ public class FavoriteFragment2 extends Fragment {
     private String factory;
     private String type;
     private double price;
-    private int model;
+    private String model;
+    private int year;
+    private String transmission;
+    private double mileage;
+    private String fuel;
     private String img;
     private String email;
 
@@ -37,13 +41,17 @@ public class FavoriteFragment2 extends Fragment {
         // Required empty public constructor
     }
 
-    public static FavoriteFragment2 newInstance(String VIN,String factory, String type, int model, double price, String img,String email) {
+    public static FavoriteFragment2 newInstance(String VIN,String factory, String type, String model, int year, String transmission, String fuel, double mileage, double price, String img,String email) {
         FavoriteFragment2 fragment = new FavoriteFragment2();
         Bundle args = new Bundle();
         args.putString("VIN", VIN);
         args.putString("Factory", factory);
         args.putString("Type", type);
-        args.putInt("Model", model);
+        args.putString("model", model);
+        args.putInt("year", year);
+        args.putString("transmission", transmission);
+        args.putString("fuel", fuel);
+        args.putDouble("mileage", mileage);
         args.putString("Image", img);
         args.putDouble("Price", price);
         args.putString("Email",email);
@@ -58,7 +66,11 @@ public class FavoriteFragment2 extends Fragment {
             VIN =getArguments().getString("VIN");
             factory = getArguments().getString("Factory");
             type = getArguments().getString("Type");
-            model = getArguments().getInt("Model");
+            model = getArguments().getString("model");
+            year = getArguments().getInt("year");
+            transmission = getArguments().getString("transmission");
+            mileage = getArguments().getDouble("mileage");
+            fuel = getArguments().getString("fuel");
             price = getArguments().getDouble("Price");
             img=getArguments().getString("Image");
             email=getArguments().getString("Email");
@@ -106,6 +118,10 @@ public class FavoriteFragment2 extends Fragment {
                         intent.putExtra("factory", factory);
                         intent.putExtra("type", type);
                         intent.putExtra("model", model);
+                        intent.putExtra("year", year);
+                        intent.putExtra("transmission", transmission);
+                        intent.putExtra("fuel", fuel);
+                        intent.putExtra("mileage", mileage);
                         intent.putExtra("price", price);
                         intent.putExtra("img", img);
                         intent.putExtra("email", email);
@@ -122,7 +138,7 @@ public class FavoriteFragment2 extends Fragment {
         reserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, price, img, email, VIN);
+                PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, year, transmission, fuel, mileage, price, img, email, VIN);
                 popUpReservation.show(getChildFragmentManager(), "popup_fragment");
             }
         });

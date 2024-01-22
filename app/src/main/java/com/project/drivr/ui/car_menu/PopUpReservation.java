@@ -22,7 +22,11 @@ public class PopUpReservation extends DialogFragment {
 
     private String factory;
     private String type;
-    private int model;
+    private String model;
+    private int year;
+    private String transmission;
+    private double mileage;
+    private String fuel;
     private double price;
     private String img;
     private String email;
@@ -30,7 +34,7 @@ public class PopUpReservation extends DialogFragment {
 
     public PopUpReservation() {}
 
-    public static PopUpReservation newInstance(String factory, String type, int model, double price, String img, String email, String VIN) {
+    public static PopUpReservation newInstance(String factory, String type, String model, int year, String transmission, String fuel, double mileage, double price, String img, String email, String VIN) {
         PopUpReservation fragment = new PopUpReservation();
         Bundle args = new Bundle();
         args.putString("VIN", VIN);
@@ -38,7 +42,11 @@ public class PopUpReservation extends DialogFragment {
         args.putString("type",type);
         args.putString("img",img);
         args.putDouble("price",price);
-        args.putInt("model",model);
+        args.putString("model",model);
+        args.putInt("year", year);
+        args.putString("transmission", transmission);
+        args.putString("fuel", fuel);
+        args.putDouble("mileage", mileage);
         args.putString("email",email);
         fragment.setArguments(args);
         return fragment;
@@ -48,7 +56,11 @@ public class PopUpReservation extends DialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             this.VIN = getArguments().getString("VIN");
-            this.model = getArguments().getInt("model");
+            this.model = getArguments().getString("model");
+            this.year = getArguments().getInt("year");
+            this.transmission = getArguments().getString("transmission");
+            this.fuel = getArguments().getString("fuel");
+            this.mileage = getArguments().getDouble("mileage");
             this.price=getArguments().getDouble("price");
             this.img=getArguments().getString("img");
             this.type=getArguments().getString("type");

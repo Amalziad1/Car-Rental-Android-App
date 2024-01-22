@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/modelFilter"
+        android:title="Model" />
+    <item android:id="@+id/makeFilter"
+        android:title="Make" />
+    <item android:id="@+id/priceFilter"
+        android:title="Prive" />
+    <item android:id="@+id/transmissionFilter"
+        android:title="Transmission" />
+    <item android:id="@+id/fuelFilter"
+        android:title="Fuel" />
+    <item android:id="@+id/mileageFilter"
+        android:title="Mileage" />
+</menu>

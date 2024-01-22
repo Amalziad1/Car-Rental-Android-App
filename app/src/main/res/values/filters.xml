@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="car_filters">
+        <item>Filter</item>
+        <item>Factory</item>
+        <item>Model</item>
+        <item>Year</item>
+        <item>Price</item>
+        <item>Transmission</item>
+        <item>Mileage</item>
+        <item>Fuel</item>
+    </string-array>
+</resources>

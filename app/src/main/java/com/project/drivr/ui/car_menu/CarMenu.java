@@ -1,7 +1,6 @@
 package com.project.drivr.ui.car_menu;
 
 import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,7 +36,11 @@ public class CarMenu extends Fragment {
     private String factory;
     private String type;
     private String img;
-    private int model;
+    private String model;
+    private int year;
+    private String transmission;
+    private double mileage;
+    private String fuel;
     private double price;
     private String email;
     private boolean exist;//
@@ -46,7 +49,7 @@ public class CarMenu extends Fragment {
         // Required empty public constructor
     }
 
-    public static CarMenu newInstance(String VIN, String factory, String type, String img, int model, double price, String email) {
+    public static CarMenu newInstance(String VIN, String factory, String type, String img, String model, int year, String transmission, String fuel, double mileage, double price, String email) {
         CarMenu fragment = new CarMenu();
         Bundle args = new Bundle();
         args.putString("VIN", VIN);
@@ -54,7 +57,11 @@ public class CarMenu extends Fragment {
         args.putString("type", type);
         args.putString("img", img);
         args.putDouble("price", price);
-        args.putInt("model", model);
+        args.putString("model", model);
+        args.putInt("year", year);
+        args.putString("transmission", transmission);
+        args.putString("fuel", fuel);
+        args.putDouble("mileage", mileage);
         args.putString("email", email);
         fragment.setArguments(args);
         return fragment;
@@ -65,7 +72,11 @@ public class CarMenu extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             this.VIN = getArguments().getString("VIN");
-            this.model = getArguments().getInt("model");
+            this.model = getArguments().getString("model");
+            this.year = getArguments().getInt("year");
+            this.transmission = getArguments().getString("transmission");
+            this.mileage = getArguments().getDouble("mileage");
+            this.fuel = getArguments().getString("fuel");
             this.price = getArguments().getDouble("price");
             this.img = getArguments().getString("img");
             this.type = getArguments().getString("type");
@@ -99,6 +110,10 @@ public class CarMenu extends Fragment {
                         intent.putExtra("factory", factory);
                         intent.putExtra("type", type);
                         intent.putExtra("model", model);
+                        intent.putExtra("year", year);
+                        intent.putExtra("transmission", transmission);
+                        intent.putExtra("fuel", fuel);
+                        intent.putExtra("mileage", mileage);
                         intent.putExtra("price", price);
                         intent.putExtra("img", img);
                         intent.putExtra("email", email);
@@ -113,7 +128,7 @@ public class CarMenu extends Fragment {
             }
         });
 
-        Button addFav=view.findViewById(R.id.AddFav);
+        Button addFav=view.findViewById(R.id.filterType);
         Button addRes=view.findViewById(R.id.Reserve);
         DataBaseHelper dataBaseHelper = DataBaseHelper.getInstance(getActivity().getApplicationContext(),"registration",null,1);
         Reservation reserve=new Reservation();
@@ -127,7 +142,7 @@ public class CarMenu extends Fragment {
         addRes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, price, img, email, VIN);
+                PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, year, transmission, fuel, mileage, price, img, email, VIN);
                 popUpReservation.show(getChildFragmentManager(), "popup_fragment");
             }
         });

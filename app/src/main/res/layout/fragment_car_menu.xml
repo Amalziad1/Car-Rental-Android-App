@@ -26,6 +26,18 @@
             android:orientation="vertical" />
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:contentDescription="More options"
+        android:src="@drawable/filter"
+        app:layout_constraintBottom_toBottomOf="@+id/menuScroller"
+        app:layout_constraintEnd_toEndOf="@+id/menuScroller" />
+
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"

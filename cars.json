@@ -1,0 +1,86 @@
+[
+  {
+    "car_factory": "Toyota",
+    "car_type": "Sedan",
+    "VIN": "1HGCM82633A123456",
+    "model": "Corolla",
+    "year": 2022,
+	"fuel": "Gasoline",
+	"transmission": "Automatic",
+	"mileage": 30000,
+    "price": 25000.00,
+"image":"https://file.kelleybluebookimages.com/kbb/base/evox/CP/50771/2022-Toyota-Corolla-front_50771_032_2400x1800_089_nologo.png"
+  },
+  {
+    "car_factory": "Ford",
+    "car_type": "SUV",
+    "VIN": "2HGCM82633A789012",
+    "model": "Escape",
+	"year": 2023,
+	"fuel": "Gasoline",
+	"transmission": "Automatic",
+	"mileage": 20000,
+    "price": 30000.00,
+    "image":"https://build.ford.com/dig/Ford/Escape/2023/HD-TILE/Image%5B%7CFord%7CEscape%7C2023%7C1%7C1.%7C200A.U0G..PB3..88C.89B.18C.576.924.16H.90K.51U.64T.FWD.99N.GAS.52T.IBBAB.IEVAR.448.ACTIV.UCL.%5D/EXT/1/vehicle.png"
+  },
+  {
+    "car_factory": "Tesla",
+    "car_type": "Electric",
+    "VIN": "3HGCM82633A456789",
+    "model": "Model 3",
+	"year": 2022,
+	"fuel": "Electric",
+	"transmission": "Automatic",
+	"mileage": 40000,
+    "price": 60000.00,
+    "image":"https://w7.pngwing.com/pngs/177/240/png-transparent-tesla-model-3-tesla-motors-car-electric-vehicle-tesla-model-3-compact-car-sedan-performance-car.png"
+  },
+  {
+    "car_factory": "Chevrolet",
+    "car_type": "Truck",
+    "VIN": "4HGCM82633A234567",
+    "model": "Silverado",
+	"year": 2023,
+	"fuel": "Diesel",
+	"transmission": "Automatic",
+	"mileage": 20000,
+    "price": 35000.00,
+    "image":"https://images.carprices.com/pricebooks_data/usa/colorized/2023/Chevrolet/View2/Silverado_1500_Crew_Cab/3LT/CK10543_G6M.png"
+  },
+  {
+    "car_factory": "Honda",
+    "car_type": "Crossover",
+    "VIN": "5HGCM82633A890123",
+    "model": "HR-V",
+	"year": 2022,
+	"fuel": "Gasoline",
+	"transmission": "Automatic",
+	"mileage": 50000,
+    "price": 28000.00,
+    "image":"https://images.carprices.com/pricebooks_data/usa/colorized/2023/Honda/View2/HR-V/EX-L/RZ1H7PJW_GN.png"
+  },
+  {
+    "car_factory": "BMW",
+    "car_type": "Convertible",
+    "VIN": "6HGCM82633A567890",
+    "model": "M440",
+	"year": 2023,
+	"fuel": "Gasoline",
+	"transmission": "Manual",
+	"mileage": 10000,
+    "price": 55000.00,
+    "image":"https://images.dealer.com/ddc/vehicles/2023/BMW/M440/Convertible/perspective/front-left/2023_76.png"
+  },
+  {
+    "car_factory": "Nissan",
+    "car_type": "Hatchback",
+    "VIN": "7HGCM82633A345678",
+    "model": "Qashqai",
+	"year": 2022,
+	"fuel": "Gasoline",
+	"transmission": "Automatic",
+	"mileage": 50000,
+    "price": 22000.00,
+    "image":"https://ymimg1.b8cdn.com/uploads/car_model/8854/pictures/10318212/2023_Nissan_Qashqai_Exterior_1.png"
+  }
+]

@@ -74,10 +74,14 @@ public class OffersFragment extends Fragment {
                         @SuppressLint("Range") String VIN = randomCar.getString(randomCar.getColumnIndex("VIN"));
                         @SuppressLint("Range") String factory = randomCar.getString(randomCar.getColumnIndex("FACTORY"));
                         @SuppressLint("Range") String type = randomCar.getString(randomCar.getColumnIndex("TYPE"));
-                        @SuppressLint("Range") int model = randomCar.getInt(randomCar.getColumnIndex("MODEL"));
+                        @SuppressLint("Range") String model = randomCar.getString(randomCar.getColumnIndex("MODEL"));
+                        @SuppressLint("Range") int year = randomCar.getInt(randomCar.getColumnIndex("YEAR"));
+                        @SuppressLint("Range") String transmission = randomCar.getString(randomCar.getColumnIndex("TRANSMISSION"));
+                        @SuppressLint("Range") String fuel = randomCar.getString(randomCar.getColumnIndex("FUEL"));
+                        @SuppressLint("Range") double mileage = randomCar.getDouble(randomCar.getColumnIndex("MILEAGE"));
                         @SuppressLint("Range") double price = randomCar.getDouble(randomCar.getColumnIndex("PRICE"));
                         @SuppressLint("Range") String img = randomCar.getString(randomCar.getColumnIndex("IMG"));
-                        specialOffer car = specialOffer.newInstance(VIN,factory,type,img,model,price,userEmail,String.valueOf(endDate),ratio);
+                        specialOffer car = specialOffer.newInstance(VIN,factory,type,img,model,year, transmission, fuel, mileage, price,userEmail,String.valueOf(endDate),ratio);
                         fragmentManager.beginTransaction()
                                 .add(R.id.offersLayout, car, "offer")
                                 .commit();
@@ -104,10 +108,14 @@ public class OffersFragment extends Fragment {
                         while (car.moveToNext()) {
                             @SuppressLint("Range") String factory = car.getString(car.getColumnIndex("FACTORY"));
                             @SuppressLint("Range") String type = car.getString(car.getColumnIndex("TYPE"));
-                            @SuppressLint("Range") int model = car.getInt(car.getColumnIndex("MODEL"));
+                            @SuppressLint("Range") String model = car.getString(car.getColumnIndex("MODEL"));
+                            @SuppressLint("Range") int year = car.getInt(car.getColumnIndex("YEAR"));
+                            @SuppressLint("Range") String transmission = car.getString(car.getColumnIndex("TRANSMISSION"));
+                            @SuppressLint("Range") String fuel = car.getString(car.getColumnIndex("FUEL"));
+                            @SuppressLint("Range") double mileage = car.getDouble(car.getColumnIndex("MILEAGE"));
                             @SuppressLint("Range") double price = car.getDouble(car.getColumnIndex("PRICE"));
                             @SuppressLint("Range") String img = car.getString(car.getColumnIndex("IMG"));
-                            specialOffer spcialcar = specialOffer.newInstance(VIN,factory,type,img,model,price,userEmail,String.valueOf(endDate),ratio);
+                            specialOffer spcialcar = specialOffer.newInstance(VIN,factory,type,img,model, year, transmission, fuel, mileage, price,userEmail,String.valueOf(endDate),ratio);
                             fragmentManager.beginTransaction()
                                     .add(R.id.offersLayout, spcialcar, "offer")
                                     .commit();

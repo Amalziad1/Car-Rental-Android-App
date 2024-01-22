@@ -4,24 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/carDetailsLayout"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="216dp"
     android:orientation="vertical"
-
     tools:context=".ui.car_menu.CarMenu">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/carDetailsConstraint"
-        android:layout_width="380dp"
-        android:layout_height="230dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_fragment_layout2">
 
         <ImageView
             android:id="@+id/photoImageView"
             android:layout_width="190dp"
-            android:layout_height="160dp"
+            android:layout_height="142.5dp"
             android:layout_centerInParent="true"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
@@ -35,38 +34,38 @@
             android:id="@+id/menuCarName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:text="Car Name"
             android:textColor="@color/white"
             android:textSize="17sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/photoImageView"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/Reserve"
             android:layout_width="145dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="44dp"
             android:backgroundTint="#3E6D67"
             android:drawableLeft="@drawable/calendar_month"
             android:text="Reserve"
             android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/filterType"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/AddFav"
+            android:id="@+id/filterType"
             android:layout_width="145dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="44dp"
             android:backgroundTint="#3E6D67"
             android:drawableLeft="@drawable/favorite"
             android:text="Favorite"
             android:textSize="17sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Reserve"
+            app:layout_constraintBottom_toTopOf="@+id/menuCarName"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -27,7 +27,11 @@ public class viewCarDetails extends AppCompatActivity {
         String factory = intent.getStringExtra("factory");
         String type=intent.getStringExtra("type");
         String img=intent.getStringExtra("img");
-        int model=intent.getIntExtra("model",0);
+        String model=intent.getStringExtra("model");
+        int year=intent.getIntExtra("year",0);
+        String fuel=intent.getStringExtra("fuel");
+        String transmission=intent.getStringExtra("transmission");
+        double mileage=intent.getDoubleExtra("mileage",0);
         double price=intent.getDoubleExtra("price",0);
         String VIN=intent.getStringExtra("VIN");
         String email=intent.getStringExtra("email");
@@ -51,7 +55,7 @@ public class viewCarDetails extends AppCompatActivity {
         addRes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, price, img, email, VIN);
+                PopUpReservation popUpReservation = PopUpReservation.newInstance(factory, type, model, year, transmission, fuel, mileage, price, img, email, VIN);
                 popUpReservation.show(getSupportFragmentManager(), "popup_fragment");
             }
         });

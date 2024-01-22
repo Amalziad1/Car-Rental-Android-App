@@ -51,10 +51,14 @@ public class FavoritesFragment extends Fragment {
                         //Toast.makeText(getActivity().getApplicationContext(), "count="+rows.getCount(), Toast.LENGTH_SHORT).show();
                         @SuppressLint("Range") String factory = rows.getString(rows.getColumnIndex("FACTORY"));
                         @SuppressLint("Range") String type = rows.getString(rows.getColumnIndex("TYPE"));
-                        @SuppressLint("Range") int model = rows.getInt(rows.getColumnIndex("MODEL"));
+                        @SuppressLint("Range") String model = rows.getString(rows.getColumnIndex("MODEL"));
+                        @SuppressLint("Range") int year = rows.getInt(rows.getColumnIndex("YEAR"));
+                        @SuppressLint("Range") String transmission = rows.getString(rows.getColumnIndex("TRANSMISSION"));
+                        @SuppressLint("Range") String fuel = rows.getString(rows.getColumnIndex("FUEL"));
+                        @SuppressLint("Range") double mileage = rows.getDouble(rows.getColumnIndex("MILEAGE"));
                         @SuppressLint("Range") double price = rows.getDouble(rows.getColumnIndex("PRICE"));
                         @SuppressLint("Range") String img = rows.getString(rows.getColumnIndex("IMG"));
-                        FavoriteFragment2 frag = FavoriteFragment2.newInstance(VIN,factory,type,model,price,img,userEmail);
+                        FavoriteFragment2 frag = FavoriteFragment2.newInstance(VIN,factory,type,model,year, transmission, fuel, mileage, price,img,userEmail);
                         fragmentManager.beginTransaction()
                                 .add(R.id.favLayout, frag, String.valueOf("FavFrag"+tag))
                                 .commit();
